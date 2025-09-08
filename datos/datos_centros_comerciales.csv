@@ -1,0 +1,451 @@
+﻿fecha,centro_comercial,tienda,categoria,afluencia,ingresos (€),tamaño_m2,antigüedad_años,empleados
+2025-08-01,Gran Plaza Norte,Zara,Moda,523,16721,280,4,16
+2025-08-02,Gran Plaza Norte,Zara,Moda,441,10195,280,4,16
+2025-08-03,Gran Plaza Norte,Zara,Moda,491,19344,280,4,16
+2025-08-04,Gran Plaza Norte,Zara,Moda,374,9068,280,4,16
+2025-08-05,Gran Plaza Norte,Zara,Moda,289,8813,280,4,16
+2025-08-06,Gran Plaza Norte,Zara,Moda,297,7669,280,4,16
+2025-08-07,Gran Plaza Norte,Zara,Moda,363,9919,280,4,16
+2025-08-08,Gran Plaza Norte,Zara,Moda,488,17423,280,4,16
+2025-08-09,Gran Plaza Norte,Zara,Moda,491,10276,280,4,16
+2025-08-10,Gran Plaza Norte,Zara,Moda,432,10113,280,4,16
+2025-08-11,Gran Plaza Norte,Zara,Moda,306,8813,280,4,16
+2025-08-12,Gran Plaza Norte,Zara,Moda,285,8522,280,4,16
+2025-08-13,Gran Plaza Norte,Zara,Moda,339,10306,280,4,16
+2025-08-14,Gran Plaza Norte,Zara,Moda,379,8981,280,4,16
+2025-08-15,Gran Plaza Norte,Zara,Moda,467,11170,280,4,16
+2025-08-16,Gran Plaza Norte,Zara,Moda,442,11715,280,4,16
+2025-08-17,Gran Plaza Norte,Zara,Moda,448,12156,280,4,16
+2025-08-18,Gran Plaza Norte,Zara,Moda,278,8577,280,4,16
+2025-08-19,Gran Plaza Norte,Zara,Moda,304,12080,280,4,16
+2025-08-20,Gran Plaza Norte,Zara,Moda,321,7695,280,4,16
+2025-08-21,Gran Plaza Norte,Zara,Moda,443,9516,280,4,16
+2025-08-22,Gran Plaza Norte,Zara,Moda,502,11203,280,4,16
+2025-08-23,Gran Plaza Norte,Zara,Moda,476,10125,280,4,16
+2025-08-24,Gran Plaza Norte,Zara,Moda,499,13225,280,4,16
+2025-08-25,Gran Plaza Norte,Zara,Moda,379,11159,280,4,16
+2025-08-26,Gran Plaza Norte,Zara,Moda,345,11821,280,4,16
+2025-08-27,Gran Plaza Norte,Zara,Moda,352,10516,280,4,16
+2025-08-28,Gran Plaza Norte,Zara,Moda,432,12333,280,4,16
+2025-08-29,Gran Plaza Norte,Zara,Moda,465,14029,280,4,16
+2025-08-30,Gran Plaza Norte,Zara,Moda,506,12642,280,4,16
+2025-08-01,Gran Plaza Norte,Starbucks,Restauración,637,13720,110,2,10
+2025-08-02,Gran Plaza Norte,Starbucks,Restauración,549,12750,110,2,10
+2025-08-03,Gran Plaza Norte,Starbucks,Restauración,684,16232,110,2,10
+2025-08-04,Gran Plaza Norte,Starbucks,Restauración,449,13823,110,2,10
+2025-08-05,Gran Plaza Norte,Starbucks,Restauración,345,9847,110,2,10
+2025-08-06,Gran Plaza Norte,Starbucks,Restauración,408,15183,110,2,10
+2025-08-07,Gran Plaza Norte,Starbucks,Restauración,491,12001,110,2,10
+2025-08-08,Gran Plaza Norte,Starbucks,Restauración,543,14526,110,2,10
+2025-08-09,Gran Plaza Norte,Starbucks,Restauración,594,20231,110,2,10
+2025-08-10,Gran Plaza Norte,Starbucks,Restauración,603,23779,110,2,10
+2025-08-11,Gran Plaza Norte,Starbucks,Restauración,290,6013,110,2,10
+2025-08-12,Gran Plaza Norte,Starbucks,Restauración,407,12231,110,2,10
+2025-08-13,Gran Plaza Norte,Starbucks,Restauración,362,10783,110,2,10
+2025-08-14,Gran Plaza Norte,Starbucks,Restauración,556,13811,110,2,10
+2025-08-15,Gran Plaza Norte,Starbucks,Restauración,622,21499,110,2,10
+2025-08-16,Gran Plaza Norte,Starbucks,Restauración,620,20240,110,2,10
+2025-08-17,Gran Plaza Norte,Starbucks,Restauración,577,21179,110,2,10
+2025-08-18,Gran Plaza Norte,Starbucks,Restauración,491,11651,110,2,10
+2025-08-19,Gran Plaza Norte,Starbucks,Restauración,419,8519,110,2,10
+2025-08-20,Gran Plaza Norte,Starbucks,Restauración,375,9198,110,2,10
+2025-08-21,Gran Plaza Norte,Starbucks,Restauración,491,13617,110,2,10
+2025-08-22,Gran Plaza Norte,Starbucks,Restauración,678,15424,110,2,10
+2025-08-23,Gran Plaza Norte,Starbucks,Restauración,608,22828,110,2,10
+2025-08-24,Gran Plaza Norte,Starbucks,Restauración,555,18425,110,2,10
+2025-08-25,Gran Plaza Norte,Starbucks,Restauración,413,10257,110,2,10
+2025-08-26,Gran Plaza Norte,Starbucks,Restauración,427,16202,110,2,10
+2025-08-27,Gran Plaza Norte,Starbucks,Restauración,399,10766,110,2,10
+2025-08-28,Gran Plaza Norte,Starbucks,Restauración,543,20602,110,2,10
+2025-08-29,Gran Plaza Norte,Starbucks,Restauración,629,13638,110,2,10
+2025-08-30,Gran Plaza Norte,Starbucks,Restauración,575,21833,110,2,10
+2025-08-01,Gran Plaza Norte,MediaMarkt,Electrónica,276,6407,620,6,26
+2025-08-02,Gran Plaza Norte,MediaMarkt,Electrónica,284,9609,620,6,26
+2025-08-03,Gran Plaza Norte,MediaMarkt,Electrónica,281,6953,620,6,26
+2025-08-04,Gran Plaza Norte,MediaMarkt,Electrónica,208,7265,620,6,26
+2025-08-05,Gran Plaza Norte,MediaMarkt,Electrónica,231,7245,620,6,26
+2025-08-06,Gran Plaza Norte,MediaMarkt,Electrónica,193,5279,620,6,26
+2025-08-07,Gran Plaza Norte,MediaMarkt,Electrónica,261,7271,620,6,26
+2025-08-08,Gran Plaza Norte,MediaMarkt,Electrónica,301,9819,620,6,26
+2025-08-09,Gran Plaza Norte,MediaMarkt,Electrónica,304,9074,620,6,26
+2025-08-10,Gran Plaza Norte,MediaMarkt,Electrónica,315,10851,620,6,26
+2025-08-11,Gran Plaza Norte,MediaMarkt,Electrónica,188,7346,620,6,26
+2025-08-12,Gran Plaza Norte,MediaMarkt,Electrónica,229,6275,620,6,26
+2025-08-13,Gran Plaza Norte,MediaMarkt,Electrónica,231,8560,620,6,26
+2025-08-14,Gran Plaza Norte,MediaMarkt,Electrónica,238,6593,620,6,26
+2025-08-15,Gran Plaza Norte,MediaMarkt,Electrónica,269,8375,620,6,26
+2025-08-16,Gran Plaza Norte,MediaMarkt,Electrónica,349,11838,620,6,26
+2025-08-17,Gran Plaza Norte,MediaMarkt,Electrónica,284,11303,620,6,26
+2025-08-18,Gran Plaza Norte,MediaMarkt,Electrónica,189,5739,620,6,26
+2025-08-19,Gran Plaza Norte,MediaMarkt,Electrónica,217,7388,620,6,26
+2025-08-20,Gran Plaza Norte,MediaMarkt,Electrónica,208,5381,620,6,26
+2025-08-21,Gran Plaza Norte,MediaMarkt,Electrónica,275,10522,620,6,26
+2025-08-22,Gran Plaza Norte,MediaMarkt,Electrónica,313,9399,620,6,26
+2025-08-23,Gran Plaza Norte,MediaMarkt,Electrónica,326,11708,620,6,26
+2025-08-24,Gran Plaza Norte,MediaMarkt,Electrónica,354,9473,620,6,26
+2025-08-25,Gran Plaza Norte,MediaMarkt,Electrónica,183,3791,620,6,26
+2025-08-26,Gran Plaza Norte,MediaMarkt,Electrónica,192,5923,620,6,26
+2025-08-27,Gran Plaza Norte,MediaMarkt,Electrónica,196,4066,620,6,26
+2025-08-28,Gran Plaza Norte,MediaMarkt,Electrónica,244,6637,620,6,26
+2025-08-29,Gran Plaza Norte,MediaMarkt,Electrónica,317,7708,620,6,26
+2025-08-30,Gran Plaza Norte,MediaMarkt,Electrónica,279,6056,620,6,26
+2025-08-01,Gran Plaza Norte,Primor,Perfumería,364,11920,150,3,9
+2025-08-02,Gran Plaza Norte,Primor,Perfumería,355,14028,150,3,9
+2025-08-03,Gran Plaza Norte,Primor,Perfumería,316,8031,150,3,9
+2025-08-04,Gran Plaza Norte,Primor,Perfumería,242,5219,150,3,9
+2025-08-05,Gran Plaza Norte,Primor,Perfumería,250,5866,150,3,9
+2025-08-06,Gran Plaza Norte,Primor,Perfumería,247,6176,150,3,9
+2025-08-07,Gran Plaza Norte,Primor,Perfumería,336,8601,150,3,9
+2025-08-08,Gran Plaza Norte,Primor,Perfumería,406,14111,150,3,9
+2025-08-09,Gran Plaza Norte,Primor,Perfumería,416,10381,150,3,9
+2025-08-10,Gran Plaza Norte,Primor,Perfumería,379,13324,150,3,9
+2025-08-11,Gran Plaza Norte,Primor,Perfumería,252,5533,150,3,9
+2025-08-12,Gran Plaza Norte,Primor,Perfumería,262,7720,150,3,9
+2025-08-13,Gran Plaza Norte,Primor,Perfumería,227,7335,150,3,9
+2025-08-14,Gran Plaza Norte,Primor,Perfumería,288,6020,150,3,9
+2025-08-15,Gran Plaza Norte,Primor,Perfumería,403,14963,150,3,9
+2025-08-16,Gran Plaza Norte,Primor,Perfumería,326,7582,150,3,9
+2025-08-17,Gran Plaza Norte,Primor,Perfumería,331,10497,150,3,9
+2025-08-18,Gran Plaza Norte,Primor,Perfumería,241,7593,150,3,9
+2025-08-19,Gran Plaza Norte,Primor,Perfumería,285,8810,150,3,9
+2025-08-20,Gran Plaza Norte,Primor,Perfumería,220,6098,150,3,9
+2025-08-21,Gran Plaza Norte,Primor,Perfumería,278,7333,150,3,9
+2025-08-22,Gran Plaza Norte,Primor,Perfumería,364,7449,150,3,9
+2025-08-23,Gran Plaza Norte,Primor,Perfumería,316,10723,150,3,9
+2025-08-24,Gran Plaza Norte,Primor,Perfumería,395,14832,150,3,9
+2025-08-25,Gran Plaza Norte,Primor,Perfumería,252,5934,150,3,9
+2025-08-26,Gran Plaza Norte,Primor,Perfumería,271,9793,150,3,9
+2025-08-27,Gran Plaza Norte,Primor,Perfumería,233,8278,150,3,9
+2025-08-28,Gran Plaza Norte,Primor,Perfumería,292,11275,150,3,9
+2025-08-29,Gran Plaza Norte,Primor,Perfumería,371,13018,150,3,9
+2025-08-30,Gran Plaza Norte,Primor,Perfumería,361,13736,150,3,9
+2025-08-01,Gran Plaza Norte,Movistar,Servicios,192,7278,90,5,8
+2025-08-02,Gran Plaza Norte,Movistar,Servicios,176,3558,90,5,8
+2025-08-03,Gran Plaza Norte,Movistar,Servicios,201,6325,90,5,8
+2025-08-04,Gran Plaza Norte,Movistar,Servicios,121,3505,90,5,8
+2025-08-05,Gran Plaza Norte,Movistar,Servicios,108,3785,90,5,8
+2025-08-06,Gran Plaza Norte,Movistar,Servicios,107,3829,90,5,8
+2025-08-07,Gran Plaza Norte,Movistar,Servicios,136,4214,90,5,8
+2025-08-08,Gran Plaza Norte,Movistar,Servicios,164,6191,90,5,8
+2025-08-09,Gran Plaza Norte,Movistar,Servicios,155,5460,90,5,8
+2025-08-10,Gran Plaza Norte,Movistar,Servicios,179,3942,90,5,8
+2025-08-11,Gran Plaza Norte,Movistar,Servicios,113,4117,90,5,8
+2025-08-12,Gran Plaza Norte,Movistar,Servicios,117,2530,90,5,8
+2025-08-13,Gran Plaza Norte,Movistar,Servicios,104,4050,90,5,8
+2025-08-14,Gran Plaza Norte,Movistar,Servicios,152,5330,90,5,8
+2025-08-15,Gran Plaza Norte,Movistar,Servicios,178,5547,90,5,8
+2025-08-16,Gran Plaza Norte,Movistar,Servicios,174,6634,90,5,8
+2025-08-17,Gran Plaza Norte,Movistar,Servicios,162,4758,90,5,8
+2025-08-18,Gran Plaza Norte,Movistar,Servicios,95,2125,90,5,8
+2025-08-19,Gran Plaza Norte,Movistar,Servicios,130,4116,90,5,8
+2025-08-20,Gran Plaza Norte,Movistar,Servicios,117,3217,90,5,8
+2025-08-21,Gran Plaza Norte,Movistar,Servicios,146,5732,90,5,8
+2025-08-22,Gran Plaza Norte,Movistar,Servicios,157,6185,90,5,8
+2025-08-23,Gran Plaza Norte,Movistar,Servicios,167,5189,90,5,8
+2025-08-24,Gran Plaza Norte,Movistar,Servicios,197,6001,90,5,8
+2025-08-25,Gran Plaza Norte,Movistar,Servicios,140,4557,90,5,8
+2025-08-26,Gran Plaza Norte,Movistar,Servicios,136,5171,90,5,8
+2025-08-27,Gran Plaza Norte,Movistar,Servicios,146,3469,90,5,8
+2025-08-28,Gran Plaza Norte,Movistar,Servicios,142,3843,90,5,8
+2025-08-29,Gran Plaza Norte,Movistar,Servicios,184,7309,90,5,8
+2025-08-30,Gran Plaza Norte,Movistar,Servicios,189,5806,90,5,8
+2025-08-01,Centro Solverde,Mango,Moda,537,12486,240,3,14
+2025-08-02,Centro Solverde,Mango,Moda,494,18006,240,3,14
+2025-08-03,Centro Solverde,Mango,Moda,464,17317,240,3,14
+2025-08-04,Centro Solverde,Mango,Moda,357,7328,240,3,14
+2025-08-05,Centro Solverde,Mango,Moda,402,9249,240,3,14
+2025-08-06,Centro Solverde,Mango,Moda,306,8451,240,3,14
+2025-08-07,Centro Solverde,Mango,Moda,390,9932,240,3,14
+2025-08-08,Centro Solverde,Mango,Moda,482,17975,240,3,14
+2025-08-09,Centro Solverde,Mango,Moda,506,19681,240,3,14
+2025-08-10,Centro Solverde,Mango,Moda,515,12847,240,3,14
+2025-08-11,Centro Solverde,Mango,Moda,302,9701,240,3,14
+2025-08-12,Centro Solverde,Mango,Moda,297,9929,240,3,14
+2025-08-13,Centro Solverde,Mango,Moda,238,7956,240,3,14
+2025-08-14,Centro Solverde,Mango,Moda,427,15135,240,3,14
+2025-08-15,Centro Solverde,Mango,Moda,532,16608,240,3,14
+2025-08-16,Centro Solverde,Mango,Moda,519,14568,240,3,14
+2025-08-17,Centro Solverde,Mango,Moda,526,12760,240,3,14
+2025-08-18,Centro Solverde,Mango,Moda,347,7040,240,3,14
+2025-08-19,Centro Solverde,Mango,Moda,354,10177,240,3,14
+2025-08-20,Centro Solverde,Mango,Moda,269,7253,240,3,14
+2025-08-21,Centro Solverde,Mango,Moda,421,13657,240,3,14
+2025-08-22,Centro Solverde,Mango,Moda,517,20158,240,3,14
+2025-08-23,Centro Solverde,Mango,Moda,408,16157,240,3,14
+2025-08-24,Centro Solverde,Mango,Moda,477,12676,240,3,14
+2025-08-25,Centro Solverde,Mango,Moda,245,5531,240,3,14
+2025-08-26,Centro Solverde,Mango,Moda,320,7372,240,3,14
+2025-08-27,Centro Solverde,Mango,Moda,313,8423,240,3,14
+2025-08-28,Centro Solverde,Mango,Moda,411,12115,240,3,14
+2025-08-29,Centro Solverde,Mango,Moda,413,8597,240,3,14
+2025-08-30,Centro Solverde,Mango,Moda,467,11942,240,3,14
+2025-08-01,Centro Solverde,Mercadona,Supermercado,1343,36644,2200,9,78
+2025-08-02,Centro Solverde,Mercadona,Supermercado,1316,44491,2200,9,78
+2025-08-03,Centro Solverde,Mercadona,Supermercado,1457,55974,2200,9,78
+2025-08-04,Centro Solverde,Mercadona,Supermercado,899,22958,2200,9,78
+2025-08-05,Centro Solverde,Mercadona,Supermercado,968,23413,2200,9,78
+2025-08-06,Centro Solverde,Mercadona,Supermercado,1023,30373,2200,9,78
+2025-08-07,Centro Solverde,Mercadona,Supermercado,1100,38444,2200,9,78
+2025-08-08,Centro Solverde,Mercadona,Supermercado,1455,36445,2200,9,78
+2025-08-09,Centro Solverde,Mercadona,Supermercado,1512,46331,2200,9,78
+2025-08-10,Centro Solverde,Mercadona,Supermercado,1361,39398,2200,9,78
+2025-08-11,Centro Solverde,Mercadona,Supermercado,731,20135,2200,9,78
+2025-08-12,Centro Solverde,Mercadona,Supermercado,889,23506,2200,9,78
+2025-08-13,Centro Solverde,Mercadona,Supermercado,815,30815,2200,9,78
+2025-08-14,Centro Solverde,Mercadona,Supermercado,1156,38820,2200,9,78
+2025-08-15,Centro Solverde,Mercadona,Supermercado,1320,40579,2200,9,78
+2025-08-16,Centro Solverde,Mercadona,Supermercado,1645,57424,2200,9,78
+2025-08-17,Centro Solverde,Mercadona,Supermercado,1258,34295,2200,9,78
+2025-08-18,Centro Solverde,Mercadona,Supermercado,964,30284,2200,9,78
+2025-08-19,Centro Solverde,Mercadona,Supermercado,729,16808,2200,9,78
+2025-08-20,Centro Solverde,Mercadona,Supermercado,975,22633,2200,9,78
+2025-08-21,Centro Solverde,Mercadona,Supermercado,1088,41273,2200,9,78
+2025-08-22,Centro Solverde,Mercadona,Supermercado,1224,37320,2200,9,78
+2025-08-23,Centro Solverde,Mercadona,Supermercado,1358,37965,2200,9,78
+2025-08-24,Centro Solverde,Mercadona,Supermercado,1568,58502,2200,9,78
+2025-08-25,Centro Solverde,Mercadona,Supermercado,832,27766,2200,9,78
+2025-08-26,Centro Solverde,Mercadona,Supermercado,1140,35494,2200,9,78
+2025-08-27,Centro Solverde,Mercadona,Supermercado,800,18992,2200,9,78
+2025-08-28,Centro Solverde,Mercadona,Supermercado,1189,33896,2200,9,78
+2025-08-29,Centro Solverde,Mercadona,Supermercado,1148,36979,2200,9,78
+2025-08-30,Centro Solverde,Mercadona,Supermercado,1384,43768,2200,9,78
+2025-08-01,Centro Solverde,Burger King,Restauración,600,12621,130,4,18
+2025-08-02,Centro Solverde,Burger King,Restauración,521,11820,130,4,18
+2025-08-03,Centro Solverde,Burger King,Restauración,618,20783,130,4,18
+2025-08-04,Centro Solverde,Burger King,Restauración,390,12445,130,4,18
+2025-08-05,Centro Solverde,Burger King,Restauración,268,10342,130,4,18
+2025-08-06,Centro Solverde,Burger King,Restauración,383,15052,130,4,18
+2025-08-07,Centro Solverde,Burger King,Restauración,553,13064,130,4,18
+2025-08-08,Centro Solverde,Burger King,Restauración,520,18107,130,4,18
+2025-08-09,Centro Solverde,Burger King,Restauración,610,21902,130,4,18
+2025-08-10,Centro Solverde,Burger King,Restauración,576,13405,130,4,18
+2025-08-11,Centro Solverde,Burger King,Restauración,433,13189,130,4,18
+2025-08-12,Centro Solverde,Burger King,Restauración,368,13816,130,4,18
+2025-08-13,Centro Solverde,Burger King,Restauración,454,12502,130,4,18
+2025-08-14,Centro Solverde,Burger King,Restauración,486,12649,130,4,18
+2025-08-15,Centro Solverde,Burger King,Restauración,568,21579,130,4,18
+2025-08-16,Centro Solverde,Burger King,Restauración,667,20590,130,4,18
+2025-08-17,Centro Solverde,Burger King,Restauración,564,21881,130,4,18
+2025-08-18,Centro Solverde,Burger King,Restauración,449,11987,130,4,18
+2025-08-19,Centro Solverde,Burger King,Restauración,426,13065,130,4,18
+2025-08-20,Centro Solverde,Burger King,Restauración,409,14630,130,4,18
+2025-08-21,Centro Solverde,Burger King,Restauración,463,16148,130,4,18
+2025-08-22,Centro Solverde,Burger King,Restauración,505,15855,130,4,18
+2025-08-23,Centro Solverde,Burger King,Restauración,604,22000,130,4,18
+2025-08-24,Centro Solverde,Burger King,Restauración,568,20975,130,4,18
+2025-08-25,Centro Solverde,Burger King,Restauración,409,9406,130,4,18
+2025-08-26,Centro Solverde,Burger King,Restauración,332,11435,130,4,18
+2025-08-27,Centro Solverde,Burger King,Restauración,460,14193,130,4,18
+2025-08-28,Centro Solverde,Burger King,Restauración,507,13645,130,4,18
+2025-08-29,Centro Solverde,Burger King,Restauración,507,19745,130,4,18
+2025-08-30,Centro Solverde,Burger King,Restauración,628,19923,130,4,18
+2025-08-01,Centro Solverde,GymForYou,Servicios,195,7301,400,2,12
+2025-08-02,Centro Solverde,GymForYou,Servicios,197,6166,400,2,12
+2025-08-03,Centro Solverde,GymForYou,Servicios,194,4471,400,2,12
+2025-08-04,Centro Solverde,GymForYou,Servicios,125,4016,400,2,12
+2025-08-05,Centro Solverde,GymForYou,Servicios,156,6007,400,2,12
+2025-08-06,Centro Solverde,GymForYou,Servicios,111,2471,400,2,12
+2025-08-07,Centro Solverde,GymForYou,Servicios,153,4280,400,2,12
+2025-08-08,Centro Solverde,GymForYou,Servicios,178,4753,400,2,12
+2025-08-09,Centro Solverde,GymForYou,Servicios,166,6373,400,2,12
+2025-08-10,Centro Solverde,GymForYou,Servicios,150,4040,400,2,12
+2025-08-11,Centro Solverde,GymForYou,Servicios,108,3137,400,2,12
+2025-08-12,Centro Solverde,GymForYou,Servicios,134,3152,400,2,12
+2025-08-13,Centro Solverde,GymForYou,Servicios,86,2343,400,2,12
+2025-08-14,Centro Solverde,GymForYou,Servicios,152,4962,400,2,12
+2025-08-15,Centro Solverde,GymForYou,Servicios,161,6429,400,2,12
+2025-08-16,Centro Solverde,GymForYou,Servicios,163,5200,400,2,12
+2025-08-17,Centro Solverde,GymForYou,Servicios,169,6415,400,2,12
+2025-08-18,Centro Solverde,GymForYou,Servicios,112,2667,400,2,12
+2025-08-19,Centro Solverde,GymForYou,Servicios,121,2579,400,2,12
+2025-08-20,Centro Solverde,GymForYou,Servicios,118,3429,400,2,12
+2025-08-21,Centro Solverde,GymForYou,Servicios,127,3961,400,2,12
+2025-08-22,Centro Solverde,GymForYou,Servicios,182,4302,400,2,12
+2025-08-23,Centro Solverde,GymForYou,Servicios,163,4592,400,2,12
+2025-08-24,Centro Solverde,GymForYou,Servicios,152,3514,400,2,12
+2025-08-25,Centro Solverde,GymForYou,Servicios,121,2957,400,2,12
+2025-08-26,Centro Solverde,GymForYou,Servicios,131,4380,400,2,12
+2025-08-27,Centro Solverde,GymForYou,Servicios,115,2847,400,2,12
+2025-08-28,Centro Solverde,GymForYou,Servicios,141,3505,400,2,12
+2025-08-29,Centro Solverde,GymForYou,Servicios,203,5672,400,2,12
+2025-08-30,Centro Solverde,GymForYou,Servicios,192,4627,400,2,12
+2025-08-01,Centro Solverde,Decathlon,Deportes,397,8618,800,7,30
+2025-08-02,Centro Solverde,Decathlon,Deportes,385,7904,800,7,30
+2025-08-03,Centro Solverde,Decathlon,Deportes,424,16049,800,7,30
+2025-08-04,Centro Solverde,Decathlon,Deportes,251,6735,800,7,30
+2025-08-05,Centro Solverde,Decathlon,Deportes,259,6568,800,7,30
+2025-08-06,Centro Solverde,Decathlon,Deportes,236,6652,800,7,30
+2025-08-07,Centro Solverde,Decathlon,Deportes,300,11690,800,7,30
+2025-08-08,Centro Solverde,Decathlon,Deportes,504,11492,800,7,30
+2025-08-09,Centro Solverde,Decathlon,Deportes,451,16234,800,7,30
+2025-08-10,Centro Solverde,Decathlon,Deportes,451,9222,800,7,30
+2025-08-11,Centro Solverde,Decathlon,Deportes,298,7497,800,7,30
+2025-08-12,Centro Solverde,Decathlon,Deportes,204,7486,800,7,30
+2025-08-13,Centro Solverde,Decathlon,Deportes,262,6666,800,7,30
+2025-08-14,Centro Solverde,Decathlon,Deportes,321,12289,800,7,30
+2025-08-15,Centro Solverde,Decathlon,Deportes,407,12651,800,7,30
+2025-08-16,Centro Solverde,Decathlon,Deportes,397,14528,800,7,30
+2025-08-17,Centro Solverde,Decathlon,Deportes,437,14552,800,7,30
+2025-08-18,Centro Solverde,Decathlon,Deportes,293,11218,800,7,30
+2025-08-19,Centro Solverde,Decathlon,Deportes,216,4522,800,7,30
+2025-08-20,Centro Solverde,Decathlon,Deportes,219,7612,800,7,30
+2025-08-21,Centro Solverde,Decathlon,Deportes,335,9308,800,7,30
+2025-08-22,Centro Solverde,Decathlon,Deportes,376,10194,800,7,30
+2025-08-23,Centro Solverde,Decathlon,Deportes,390,11513,800,7,30
+2025-08-24,Centro Solverde,Decathlon,Deportes,471,18244,800,7,30
+2025-08-25,Centro Solverde,Decathlon,Deportes,226,5705,800,7,30
+2025-08-26,Centro Solverde,Decathlon,Deportes,310,6518,800,7,30
+2025-08-27,Centro Solverde,Decathlon,Deportes,357,12644,800,7,30
+2025-08-28,Centro Solverde,Decathlon,Deportes,320,6880,800,7,30
+2025-08-29,Centro Solverde,Decathlon,Deportes,434,12454,800,7,30
+2025-08-30,Centro Solverde,Decathlon,Deportes,457,16626,800,7,30
+2025-08-01,Parque Sur Este,H&M,Moda,482,15329,260,5,15
+2025-08-02,Parque Sur Este,H&M,Moda,504,11003,260,5,15
+2025-08-03,Parque Sur Este,H&M,Moda,446,13753,260,5,15
+2025-08-04,Parque Sur Este,H&M,Moda,370,12818,260,5,15
+2025-08-05,Parque Sur Este,H&M,Moda,355,13129,260,5,15
+2025-08-06,Parque Sur Este,H&M,Moda,345,10277,260,5,15
+2025-08-07,Parque Sur Este,H&M,Moda,382,11979,260,5,15
+2025-08-08,Parque Sur Este,H&M,Moda,528,10918,260,5,15
+2025-08-09,Parque Sur Este,H&M,Moda,473,18646,260,5,15
+2025-08-10,Parque Sur Este,H&M,Moda,568,16747,260,5,15
+2025-08-11,Parque Sur Este,H&M,Moda,309,11302,260,5,15
+2025-08-12,Parque Sur Este,H&M,Moda,291,9290,260,5,15
+2025-08-13,Parque Sur Este,H&M,Moda,277,9397,260,5,15
+2025-08-14,Parque Sur Este,H&M,Moda,381,13142,260,5,15
+2025-08-15,Parque Sur Este,H&M,Moda,476,17047,260,5,15
+2025-08-16,Parque Sur Este,H&M,Moda,445,14470,260,5,15
+2025-08-17,Parque Sur Este,H&M,Moda,464,9506,260,5,15
+2025-08-18,Parque Sur Este,H&M,Moda,381,7782,260,5,15
+2025-08-19,Parque Sur Este,H&M,Moda,351,12627,260,5,15
+2025-08-20,Parque Sur Este,H&M,Moda,398,10751,260,5,15
+2025-08-21,Parque Sur Este,H&M,Moda,388,12629,260,5,15
+2025-08-22,Parque Sur Este,H&M,Moda,576,22856,260,5,15
+2025-08-23,Parque Sur Este,H&M,Moda,454,15777,260,5,15
+2025-08-24,Parque Sur Este,H&M,Moda,510,11326,260,5,15
+2025-08-25,Parque Sur Este,H&M,Moda,255,6291,260,5,15
+2025-08-26,Parque Sur Este,H&M,Moda,257,5231,260,5,15
+2025-08-27,Parque Sur Este,H&M,Moda,311,10447,260,5,15
+2025-08-28,Parque Sur Este,H&M,Moda,381,14858,260,5,15
+2025-08-29,Parque Sur Este,H&M,Moda,565,16581,260,5,15
+2025-08-30,Parque Sur Este,H&M,Moda,482,11250,260,5,15
+2025-08-01,Parque Sur Este,KFC,Restauración,621,18787,140,3,16
+2025-08-02,Parque Sur Este,KFC,Restauración,590,13883,140,3,16
+2025-08-03,Parque Sur Este,KFC,Restauración,600,16201,140,3,16
+2025-08-04,Parque Sur Este,KFC,Restauración,339,13350,140,3,16
+2025-08-05,Parque Sur Este,KFC,Restauración,489,11285,140,3,16
+2025-08-06,Parque Sur Este,KFC,Restauración,394,9648,140,3,16
+2025-08-07,Parque Sur Este,KFC,Restauración,514,16243,140,3,16
+2025-08-08,Parque Sur Este,KFC,Restauración,481,18061,140,3,16
+2025-08-09,Parque Sur Este,KFC,Restauración,613,23976,140,3,16
+2025-08-10,Parque Sur Este,KFC,Restauración,622,22510,140,3,16
+2025-08-11,Parque Sur Este,KFC,Restauración,397,11183,140,3,16
+2025-08-12,Parque Sur Este,KFC,Restauración,487,12270,140,3,16
+2025-08-13,Parque Sur Este,KFC,Restauración,364,8882,140,3,16
+2025-08-14,Parque Sur Este,KFC,Restauración,564,12138,140,3,16
+2025-08-15,Parque Sur Este,KFC,Restauración,596,18981,140,3,16
+2025-08-16,Parque Sur Este,KFC,Restauración,702,18923,140,3,16
+2025-08-17,Parque Sur Este,KFC,Restauración,604,22693,140,3,16
+2025-08-18,Parque Sur Este,KFC,Restauración,521,17281,140,3,16
+2025-08-19,Parque Sur Este,KFC,Restauración,458,15390,140,3,16
+2025-08-20,Parque Sur Este,KFC,Restauración,435,15248,140,3,16
+2025-08-21,Parque Sur Este,KFC,Restauración,479,16702,140,3,16
+2025-08-22,Parque Sur Este,KFC,Restauración,566,20579,140,3,16
+2025-08-23,Parque Sur Este,KFC,Restauración,542,13951,140,3,16
+2025-08-24,Parque Sur Este,KFC,Restauración,679,26904,140,3,16
+2025-08-25,Parque Sur Este,KFC,Restauración,340,10471,140,3,16
+2025-08-26,Parque Sur Este,KFC,Restauración,461,10206,140,3,16
+2025-08-27,Parque Sur Este,KFC,Restauración,450,12076,140,3,16
+2025-08-28,Parque Sur Este,KFC,Restauración,553,21368,140,3,16
+2025-08-29,Parque Sur Este,KFC,Restauración,554,18926,140,3,16
+2025-08-30,Parque Sur Este,KFC,Restauración,556,17593,140,3,16
+2025-08-01,Parque Sur Este,Carrefour,Supermercado,1439,53862,2000,8,75
+2025-08-02,Parque Sur Este,Carrefour,Supermercado,1376,54183,2000,8,75
+2025-08-03,Parque Sur Este,Carrefour,Supermercado,1443,29569,2000,8,75
+2025-08-04,Parque Sur Este,Carrefour,Supermercado,909,24063,2000,8,75
+2025-08-05,Parque Sur Este,Carrefour,Supermercado,1189,34383,2000,8,75
+2025-08-06,Parque Sur Este,Carrefour,Supermercado,909,36307,2000,8,75
+2025-08-07,Parque Sur Este,Carrefour,Supermercado,1038,37260,2000,8,75
+2025-08-08,Parque Sur Este,Carrefour,Supermercado,1221,29811,2000,8,75
+2025-08-09,Parque Sur Este,Carrefour,Supermercado,1514,38554,2000,8,75
+2025-08-10,Parque Sur Este,Carrefour,Supermercado,1496,34439,2000,8,75
+2025-08-11,Parque Sur Este,Carrefour,Supermercado,1021,33458,2000,8,75
+2025-08-12,Parque Sur Este,Carrefour,Supermercado,928,23649,2000,8,75
+2025-08-13,Parque Sur Este,Carrefour,Supermercado,1029,25312,2000,8,75
+2025-08-14,Parque Sur Este,Carrefour,Supermercado,1144,23592,2000,8,75
+2025-08-15,Parque Sur Este,Carrefour,Supermercado,1383,40748,2000,8,75
+2025-08-16,Parque Sur Este,Carrefour,Supermercado,1764,41825,2000,8,75
+2025-08-17,Parque Sur Este,Carrefour,Supermercado,1561,57594,2000,8,75
+2025-08-18,Parque Sur Este,Carrefour,Supermercado,1067,34703,2000,8,75
+2025-08-19,Parque Sur Este,Carrefour,Supermercado,1041,30845,2000,8,75
+2025-08-20,Parque Sur Este,Carrefour,Supermercado,965,21716,2000,8,75
+2025-08-21,Parque Sur Este,Carrefour,Supermercado,1089,32486,2000,8,75
+2025-08-22,Parque Sur Este,Carrefour,Supermercado,1511,47807,2000,8,75
+2025-08-23,Parque Sur Este,Carrefour,Supermercado,1482,43132,2000,8,75
+2025-08-24,Parque Sur Este,Carrefour,Supermercado,1228,26339,2000,8,75
+2025-08-25,Parque Sur Este,Carrefour,Supermercado,923,23844,2000,8,75
+2025-08-26,Parque Sur Este,Carrefour,Supermercado,695,25855,2000,8,75
+2025-08-27,Parque Sur Este,Carrefour,Supermercado,800,31786,2000,8,75
+2025-08-28,Parque Sur Este,Carrefour,Supermercado,1111,33305,2000,8,75
+2025-08-29,Parque Sur Este,Carrefour,Supermercado,1639,33100,2000,8,75
+2025-08-30,Parque Sur Este,Carrefour,Supermercado,1491,45258,2000,8,75
+2025-08-01,Parque Sur Este,Pull&Bear,Moda,426,9189,230,4,12
+2025-08-02,Parque Sur Este,Pull&Bear,Moda,443,10035,230,4,12
+2025-08-03,Parque Sur Este,Pull&Bear,Moda,585,14041,230,4,12
+2025-08-04,Parque Sur Este,Pull&Bear,Moda,322,7113,230,4,12
+2025-08-05,Parque Sur Este,Pull&Bear,Moda,340,13166,230,4,12
+2025-08-06,Parque Sur Este,Pull&Bear,Moda,324,9987,230,4,12
+2025-08-07,Parque Sur Este,Pull&Bear,Moda,431,15530,230,4,12
+2025-08-08,Parque Sur Este,Pull&Bear,Moda,479,17386,230,4,12
+2025-08-09,Parque Sur Este,Pull&Bear,Moda,527,17323,230,4,12
+2025-08-10,Parque Sur Este,Pull&Bear,Moda,490,16969,230,4,12
+2025-08-11,Parque Sur Este,Pull&Bear,Moda,315,7681,230,4,12
+2025-08-12,Parque Sur Este,Pull&Bear,Moda,329,8796,230,4,12
+2025-08-13,Parque Sur Este,Pull&Bear,Moda,351,10517,230,4,12
+2025-08-14,Parque Sur Este,Pull&Bear,Moda,392,13478,230,4,12
+2025-08-15,Parque Sur Este,Pull&Bear,Moda,452,15189,230,4,12
+2025-08-16,Parque Sur Este,Pull&Bear,Moda,443,9131,230,4,12
+2025-08-17,Parque Sur Este,Pull&Bear,Moda,504,17409,230,4,12
+2025-08-18,Parque Sur Este,Pull&Bear,Moda,265,7555,230,4,12
+2025-08-19,Parque Sur Este,Pull&Bear,Moda,297,6178,230,4,12
+2025-08-20,Parque Sur Este,Pull&Bear,Moda,280,8840,230,4,12
+2025-08-21,Parque Sur Este,Pull&Bear,Moda,432,16186,230,4,12
+2025-08-22,Parque Sur Este,Pull&Bear,Moda,498,14160,230,4,12
+2025-08-23,Parque Sur Este,Pull&Bear,Moda,547,13244,230,4,12
+2025-08-24,Parque Sur Este,Pull&Bear,Moda,427,13933,230,4,12
+2025-08-25,Parque Sur Este,Pull&Bear,Moda,307,11721,230,4,12
+2025-08-26,Parque Sur Este,Pull&Bear,Moda,314,7771,230,4,12
+2025-08-27,Parque Sur Este,Pull&Bear,Moda,302,11299,230,4,12
+2025-08-28,Parque Sur Este,Pull&Bear,Moda,418,12663,230,4,12
+2025-08-29,Parque Sur Este,Pull&Bear,Moda,490,13632,230,4,12
+2025-08-30,Parque Sur Este,Pull&Bear,Moda,448,11272,230,4,12
+2025-08-01,Parque Sur Este,Orange,Servicios,169,3822,100,6,7
+2025-08-02,Parque Sur Este,Orange,Servicios,215,6251,100,6,7
+2025-08-03,Parque Sur Este,Orange,Servicios,175,6401,100,6,7
+2025-08-04,Parque Sur Este,Orange,Servicios,99,2472,100,6,7
+2025-08-05,Parque Sur Este,Orange,Servicios,133,3105,100,6,7
+2025-08-06,Parque Sur Este,Orange,Servicios,120,4167,100,6,7
+2025-08-07,Parque Sur Este,Orange,Servicios,157,5669,100,6,7
+2025-08-08,Parque Sur Este,Orange,Servicios,214,7996,100,6,7
+2025-08-09,Parque Sur Este,Orange,Servicios,168,3551,100,6,7
+2025-08-10,Parque Sur Este,Orange,Servicios,178,6894,100,6,7
+2025-08-11,Parque Sur Este,Orange,Servicios,126,3798,100,6,7
+2025-08-12,Parque Sur Este,Orange,Servicios,107,2457,100,6,7
+2025-08-13,Parque Sur Este,Orange,Servicios,132,4001,100,6,7
+2025-08-14,Parque Sur Este,Orange,Servicios,152,5067,100,6,7
+2025-08-15,Parque Sur Este,Orange,Servicios,184,6158,100,6,7
+2025-08-16,Parque Sur Este,Orange,Servicios,179,3916,100,6,7
+2025-08-17,Parque Sur Este,Orange,Servicios,183,4308,100,6,7
+2025-08-18,Parque Sur Este,Orange,Servicios,154,5661,100,6,7
+2025-08-19,Parque Sur Este,Orange,Servicios,122,3947,100,6,7
+2025-08-20,Parque Sur Este,Orange,Servicios,134,4209,100,6,7
+2025-08-21,Parque Sur Este,Orange,Servicios,149,4943,100,6,7
+2025-08-22,Parque Sur Este,Orange,Servicios,193,6373,100,6,7
+2025-08-23,Parque Sur Este,Orange,Servicios,202,4234,100,6,7
+2025-08-24,Parque Sur Este,Orange,Servicios,184,5177,100,6,7
+2025-08-25,Parque Sur Este,Orange,Servicios,126,4380,100,6,7
+2025-08-26,Parque Sur Este,Orange,Servicios,135,3791,100,6,7
+2025-08-27,Parque Sur Este,Orange,Servicios,146,5145,100,6,7
+2025-08-28,Parque Sur Este,Orange,Servicios,149,4278,100,6,7
+2025-08-29,Parque Sur Este,Orange,Servicios,179,3600,100,6,7
+2025-08-30,Parque Sur Este,Orange,Servicios,175,4782,100,6,7
