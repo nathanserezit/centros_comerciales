@@ -1172,6 +1172,7 @@ def create_market_analysis_charts():
                 title=dict(text="📊 Rankings de Rendimiento", font=dict(size=16, color=title_color)),
                 template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
                 height=600,
+                margin=dict(t=100),
                 showlegend=False,
                 plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
                 paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
@@ -1182,7 +1183,7 @@ def create_market_analysis_charts():
                 yaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
                 # Configurar colores de títulos de subplots
                 annotations=[
-                    dict(text="🏆 Top Zonas por Rendimiento", x=0.5, y=0.95, xref="paper", yref="paper", 
+                    dict(text="🏆 Top Zonas por Rendimiento", x=0.5, y=1.05, xref="paper", yref="paper", 
                          showarrow=False, font=dict(size=14, color=title_color)),
                     dict(text="🎯 Top Tipos de Negocio por Ocupación", x=0.5, y=0.45, xref="paper", yref="paper", 
                          showarrow=False, font=dict(size=14, color=title_color))
@@ -1198,8 +1199,14 @@ def create_market_analysis_charts():
             market_df['eficiencia'] = market_df['ingresos_totales'] / market_df['trafico_peatonal']
             
             # Scatter plot por zona y tipo de negocio
-            colors_map = {'Madrid': '#2563eb', 'Cataluña': '#3b82f6', 'Norte': '#60a5fa', 
-                         'Sur': '#1d4ed8', 'Castilla-La Mancha': '#1e40af', 'León': '#93c5fd'}
+            colors_map = {
+                            'Madrid': '#60a5fa',           # Azul claro
+                            'Cataluña': '#93c5fd',         # Azul muy claro
+                            'Norte': '#2563eb',            # Azul principal
+                            'Sur': '#3b82f6',              # Azul medio
+                            'Castilla-La Mancha': '#1e40af', # Azul oscuro
+                            'León': '#64748b'              # Gris azulado suave
+                        }
             
             for zona in market_df['zona_geografica'].unique():
                 data_zona = market_df[market_df['zona_geografica'] == zona]
@@ -1529,24 +1536,21 @@ if selected == "Dashboard":
         if market_charts:
             # Análisis por Tipo de Negocio
             if 'business_comparison' in market_charts:
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(market_charts['business_comparison'], use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                
             
             # Rankings y Eficiencia
             col1, col2 = st.columns([1, 1])
             
             with col1:
                 if 'rankings' in market_charts:
-                    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                     st.plotly_chart(market_charts['rankings'], use_container_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
+                    
             
             with col2:
                 if 'efficiency' in market_charts:
-                    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                     st.plotly_chart(market_charts['efficiency'], use_container_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
+                    
     
     else:
         # Estado sin datos - Llamada a la acción más atractiva
@@ -1741,7 +1745,6 @@ elif selected == "Análisis vs Mercado":
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
             
             # Gráfica de radar mejorada
             categories = ['Tráfico', 'Ventas/m²', 'Ocupación', 'Tiempo', 'Conversión', 'Ingresos']
@@ -1752,11 +1755,11 @@ elif selected == "Análisis vs Mercado":
                 min(100, (latest_data.get('ventas_por_m2', 0) / sector_avg['ventas_por_m2']) * 50),
                 latest_data.get('tasa_ocupacion', 0),
                 min(100, (latest_data.get('tiempo_permanencia', 0) / sector_avg['tiempo_permanencia']) * 50),
-                latest_data.get('tasa_conversion', 0) * 5,
+                latest_data.get('tasa_conversion', 0),
                 min(100, (latest_data.get('ingresos_totales', 0) / sector_avg['ingresos_totales']) * 50)
             ]
             
-            sector_values = [50, 50, sector_avg['tasa_ocupacion'], 50, sector_avg['tasa_conversion'] * 5, 50]
+            sector_values = [50, 50, sector_avg['tasa_ocupacion'], 50, sector_avg['tasa_conversion'], 50]
             
             fig = go.Figure()
             
@@ -1824,7 +1827,6 @@ elif selected == "Análisis vs Mercado":
             st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
-            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
             st.subheader("🎯 Posicionamiento en el Mercado")
 
             # Calcular score general
