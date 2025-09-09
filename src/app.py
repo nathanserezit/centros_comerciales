@@ -8,27 +8,29 @@ from datetime import datetime, timedelta
 import json
 import os
 
-# 🎨 Paleta de colores optimizada para compatibilidad cross-platform (Mac/Windows)
-# Estos colores tienen mejor contraste y se ven consistentes en diferentes sistemas
+# 🎨 Paleta de colores simplificada - Azul y Blanco
+# Esquema de color centrado en azul #2563eb con gradientes
 COLORS = {
-    'primary': '#2E86AB',      # Azul profesional (mejor que #00d4aa)
-    'secondary': '#A23B72',    # Magenta oscuro (mejor que #00a8cc)
-    'success': '#F18F01',      # Naranja cálido (mejor que #ff6b6b)
-    'warning': '#C73E1D',      # Rojo intenso (mejor que #ffa726)
-    'info': '#7209B7',         # Púrpura (mejor que #66bb6a)
-    'accent': '#277DA1',       # Azul oscuro (mejor que #ab47bc)
-    'neutral': '#495057',      # Gris oscuro
-    'light': '#6C757D'         # Gris medio
+    'primary': '#2563eb',      # Azul principal
+    'primary_light': '#3b82f6', # Azul claro
+    'primary_dark': '#1d4ed8',  # Azul oscuro
+    'secondary': '#1e40af',     # Azul secundario
+    'accent': '#60a5fa',        # Azul acento
+    'success': '#10b981',       # Verde para éxito
+    'warning': '#f59e0b',       # Ámbar para advertencias
+    'error': '#ef4444',         # Rojo para errores
+    'neutral': '#6b7280',       # Gris neutro
+    'light': '#9ca3af'          # Gris claro
 }
 
-# Paleta específica para gráficas (6 colores distintivos)
+# Paleta específica para gráficas - Solo gradientes de azul
 CHART_COLORS = [
-    COLORS['primary'],    # Azul
-    COLORS['success'],    # Naranja
-    COLORS['secondary'],  # Magenta
-    COLORS['warning'],    # Rojo
-    COLORS['info'],       # Púrpura
-    COLORS['accent']      # Azul oscuro
+    '#2563eb',  # Azul principal
+    '#3b82f6',  # Azul medio
+    '#60a5fa',  # Azul claro
+    '#1d4ed8',  # Azul oscuro
+    '#1e40af',  # Azul secundario
+    '#93c5fd'   # Azul muy claro
 ]
 import matplotlib.colors as mcolors
 from streamlit_option_menu import option_menu
@@ -153,42 +155,50 @@ if 'aggregated_data' not in st.session_state:
     st.session_state.aggregated_data = {}
 if 'dark_mode' not in st.session_state:
     st.session_state.dark_mode = False
+if 'selected_page' not in st.session_state:
+    st.session_state.selected_page = "Dashboard"
 
 # Función para generar CSS según el modo
 def get_theme_css(dark_mode=False):
-    """Genera CSS dinámico basado en el modo claro/oscuro"""
+    """Genera CSS dinámico basado en el modo claro/oscuro con esquema azul y blanco"""
     if dark_mode:
-        # Modo oscuro
-        bg_primary = "#1e1e1e"
-        bg_secondary = "#2d2d30"
-        bg_sidebar = "#252526"
+        # Modo oscuro - Azul oscuro y blanco
+        bg_primary = "#0f172a"     # Azul muy oscuro
+        bg_secondary = "#1e293b"   # Azul oscuro medio
+        bg_sidebar = "#1e293b"     # Azul oscuro para sidebar
+        sidebar_text_color = "#ffffff"  # Texto blanco en sidebar
+        sidebar_secondary_text = "#cbd5e1"  # Texto secundario en sidebar
+        sidebar_border_color = "#334155"  # Bordes en sidebar
         text_primary = "#ffffff"
-        text_secondary = "#cccccc"
-        border_color = "#3e3e42"
-        card_bg = "#2d2d30"
-        button_bg = "#0078d4"
-        button_hover = "#106ebe"
-        input_bg = "#3c3c3c"
-        success_bg = "#0f5132"
-        warning_bg = "#664d03"
-        error_bg = "#58151c"
-        info_bg = "#055160"
+        text_secondary = "#cbd5e1"
+        border_color = "#334155"
+        card_bg = "#1e293b"
+        button_bg = "#2563eb"      # Azul principal
+        button_hover = "#1d4ed8"   # Azul oscuro
+        input_bg = "#334155"
+        success_bg = "#065f46"
+        warning_bg = "#92400e"
+        error_bg = "#7f1d1d"
+        info_bg = "#1e3a8a"
     else:
-        # Modo claro
+        # Modo claro - Azul y blanco
         bg_primary = "#ffffff"
-        bg_secondary = "#f8f9fa"
-        bg_sidebar = "#343a40"
-        text_primary = "#212529"
-        text_secondary = "#6c757d"
-        border_color = "#dee2e6"
+        bg_secondary = "#f8fafc"   # Blanco azulado muy claro
+        bg_sidebar = "#1e293b"     # Azul oscuro para contraste
+        sidebar_text_color = "#ffffff"  # Texto blanco en sidebar oscuro
+        sidebar_secondary_text = "#cbd5e1"  # Texto secundario en sidebar
+        sidebar_border_color = "#334155"  # Bordes en sidebar
+        text_primary = "#1f2937"   # Texto oscuro para contenido principal
+        text_secondary = "#64748b"
+        border_color = "#e2e8f0"
         card_bg = "#ffffff"
-        button_bg = "#2E86AB"
-        button_hover = "#1a5f7a"
+        button_bg = "#2563eb"      # Azul principal
+        button_hover = "#1d4ed8"   # Azul oscuro
         input_bg = "#ffffff"
-        success_bg = "#d4edda"
-        warning_bg = "#fff3cd"
-        error_bg = "#f8d7da"
-        info_bg = "#d1ecf1"
+        success_bg = "#dcfce7"
+        warning_bg = "#fef3c7"
+        error_bg = "#fecaca"
+        info_bg = "#dbeafe"
     
     return f"""
     <style>
@@ -197,8 +207,12 @@ def get_theme_css(dark_mode=False):
             --bg-primary: {bg_primary};
             --bg-secondary: {bg_secondary};
             --bg-sidebar: {bg_sidebar};
+            --sidebar-text-color: {sidebar_text_color};
+            --sidebar-secondary-text: {sidebar_secondary_text};
+            --sidebar-border-color: {sidebar_border_color};
             --text-primary: {text_primary};
             --text-secondary: {text_secondary};
+            --text-color: {text_primary};
             --border-color: {border_color};
             --card-bg: {card_bg};
             --button-bg: {button_bg};
@@ -213,50 +227,51 @@ def get_theme_css(dark_mode=False):
         /* Tema principal adaptable */
         .main {{
             background: var(--bg-primary) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
         }}
         
         .stApp {{
             background: var(--bg-primary) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
         }}
         
         /* Contenedor principal */
         .main .block-container {{
             background: var(--bg-primary) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
         }}
         
-        /* KPI Cards mejoradas */
+        /* KPI Cards mejoradas - Gradiente azul */
         .kpi-card {{
-            background: linear-gradient(135deg, var(--button-bg) 0%, var(--button-hover) 100%);
-            color: #ffffff !important;
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 2px solid var(--button-hover);
-            text-align: center;
-            margin: 0.5rem;
-            box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+        color: #ffffff !important;
+        padding: 1.5rem;
+        border-radius: 16px;
+            border: 2px solid #1d4ed8;
+        text-align: center;
+        margin: 0.5rem;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
             transition: all 0.3s ease;
         }}
         
         .kpi-card h2, .kpi-card h3, .kpi-card p {{
-            color: #ffffff !important;
-            margin: 0.25rem 0;
+        color: #ffffff !important;
+        margin: 0.25rem 0;
         }}
         
         .kpi-card:hover {{
             transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(46, 134, 171, 0.4);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
         }}
         
         /* Contenedores de gráficos */
         .chart-container {{
             background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 16px;
+        padding: 1.5rem;
+        border-radius: 16px;
             border: 2px solid var(--border-color);
-            margin: 1rem 0;
+        margin: 1rem 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, {"0.2" if dark_mode else "0.1"});
         }}
         
@@ -275,14 +290,68 @@ def get_theme_css(dark_mode=False):
         
         /* Contenido del sidebar */
         section[data-testid="stSidebar"] .stMarkdown {{
-            color: #ffffff !important;
+            color: var(--sidebar-text-color) !important;
         }}
         
         section[data-testid="stSidebar"] h1, 
         section[data-testid="stSidebar"] h2, 
         section[data-testid="stSidebar"] h3 {{
-            color: #ffffff !important;
+            color: var(--sidebar-text-color) !important;
             text-align: center;
+        }}
+        
+        /* Textos específicos del sidebar */
+        section[data-testid="stSidebar"] p,
+        section[data-testid="stSidebar"] span,
+        section[data-testid="stSidebar"] div:not(.stButton),
+        section[data-testid="stSidebar"] label {{
+            color: var(--sidebar-text-color) !important;
+        }}
+        
+        /* Métricas del sidebar */
+        section[data-testid="stSidebar"] .metric-container {{
+            color: var(--sidebar-text-color) !important;
+        }}
+        
+        section[data-testid="stSidebar"] [data-testid="metric-container"] * {{
+            color: var(--sidebar-text-color) !important;
+        }}
+        
+        section[data-testid="stSidebar"] [data-testid="metric-container"] label {{
+            color: var(--sidebar-secondary-text) !important;
+        }}
+        
+        /* Texto del contenido principal en colores normales */
+        .main .stMarkdown,
+        section[data-testid="stMain"] .stMarkdown {{
+            color: var(--text-color) !important;
+        }}
+        
+        .main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
+        section[data-testid="stMain"] h1, 
+        section[data-testid="stMain"] h2, 
+        section[data-testid="stMain"] h3, 
+        section[data-testid="stMain"] h4, 
+        section[data-testid="stMain"] h5, 
+        section[data-testid="stMain"] h6 {{
+            color: var(--text-color) !important;
+        }}
+        
+        .main p, .main span, .main div,
+        section[data-testid="stMain"] p:not(.stButton p), 
+        section[data-testid="stMain"] span:not(.stButton span), 
+        section[data-testid="stMain"] div:not(.stButton div) {{
+            color: var(--text-color) !important;
+        }}
+        
+        /* Sobreescribir cualquier color blanco en el contenido principal */
+        section[data-testid="stMain"] * {{
+            color: var(--text-color) !important;
+        }}
+        
+        /* Excepciones para elementos que deben mantener colores específicos */
+        section[data-testid="stMain"] .stButton button {{
+            color: #ffffff !important;
         }}
         
         /* Botones principales */
@@ -291,10 +360,10 @@ def get_theme_css(dark_mode=False):
             color: #ffffff !important;
             border: 2px solid var(--button-hover);
             border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
             width: 100%;
         }}
         
@@ -302,6 +371,43 @@ def get_theme_css(dark_mode=False):
             background: linear-gradient(135deg, var(--button-hover) 0%, var(--button-bg) 100%);
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(46, 134, 171, 0.4);
+        }}
+        
+        /* Botones secundarios para sidebar */
+        section[data-testid="stSidebar"] .stButton > button[kind="secondary"] {{
+            background: transparent !important;
+            color: var(--sidebar-text-color) !important;
+            border: 1px solid var(--sidebar-border-color) !important;
+            border-radius: 8px !important;
+            padding: 0.75rem 1rem !important;
+            font-weight: 400 !important;
+            font-size: 0.9rem !important;
+            text-align: left !important;
+            margin: 0.3rem 0 !important;
+        }}
+        
+        section[data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover {{
+            background: rgba(37, 99, 235, 0.1) !important;
+            border-color: #2563eb !important;
+            color: var(--sidebar-text-color) !important;
+            transform: none !important;
+        }}
+        
+        /* Botones primarios para sidebar */
+        section[data-testid="stSidebar"] .stButton > button[kind="primary"] {{
+            background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+            color: #ffffff !important;
+            border: 1px solid #2563eb !important;
+            border-radius: 8px !important;
+            padding: 0.75rem 1rem !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+        }}
+        
+        /* Todos los botones del sidebar */
+        section[data-testid="stSidebar"] .stButton > button {{
+            color: var(--sidebar-text-color) !important;
         }}
         
         /* Inputs mejorados */
@@ -321,14 +427,14 @@ def get_theme_css(dark_mode=False):
         
         /* Títulos y texto */
         h1, h2, h3, h4, h5, h6 {{
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
         }}
         
         p, span, div {{
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
         }}
-        
-        /* Métricas de Streamlit */
+    
+    /* Métricas de Streamlit */
         .metric-container {{
             background: var(--card-bg) !important;
             border: 2px solid var(--border-color) !important;
@@ -337,39 +443,39 @@ def get_theme_css(dark_mode=False):
         }}
         
         .metric-container label {{
-            color: var(--text-secondary) !important;
+            color: #cbd5e1 !important;
             font-weight: 600 !important;
         }}
         
         .metric-container [data-testid="metric-container"] > div {{
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
         }}
         
         /* Cajas de información */
         .stInfo {{
             background-color: var(--info-bg) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
             border: 1px solid var(--border-color) !important;
             border-radius: 8px !important;
         }}
         
         .stSuccess {{
             background-color: var(--success-bg) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
             border: 1px solid var(--border-color) !important;
             border-radius: 8px !important;
         }}
         
         .stWarning {{
             background-color: var(--warning-bg) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
             border: 1px solid var(--border-color) !important;
             border-radius: 8px !important;
         }}
         
         .stError {{
             background-color: var(--error-bg) !important;
-            color: var(--text-primary) !important;
+            color: #ffffff !important;
             border: 1px solid var(--border-color) !important;
             border-radius: 8px !important;
         }}
@@ -390,8 +496,8 @@ def get_theme_css(dark_mode=False):
             border-color: var(--button-hover) !important;
             background: var(--card-bg) !important;
         }}
-        
-        /* Dataframes */
+    
+    /* Dataframes */
         .dataframe {{
             background-color: var(--card-bg) !important;
             color: var(--text-primary) !important;
@@ -430,7 +536,7 @@ def get_theme_css(dark_mode=False):
         * {{
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }}
-    </style>
+</style>
     """
 
 # Aplicar CSS dinámico basado en el modo
@@ -692,7 +798,7 @@ def create_kpi_chart(data, sector_avg, metric_name, title, unit):
         line=dict(color=COLORS['primary'], width=3),
         marker=dict(size=8, color=COLORS['primary']),
         fill='tonexty',
-        fillcolor='rgba(0, 212, 170, 0.1)'
+        fillcolor='rgba(37, 99, 235, 0.1)'
     ))
     
     # Promedio del sector
@@ -719,7 +825,7 @@ def create_kpi_chart(data, sector_avg, metric_name, title, unit):
         )
     
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#ffffff" if st.session_state.dark_mode else "#212529")),
+        title=dict(text=title, font=dict(size=16, color="#ffffff")),
         xaxis_title="Fecha",
         yaxis_title=f"{title} ({unit})",
         template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
@@ -759,8 +865,8 @@ def create_comparison_chart(center_data, sector_avg):
     
     fig = go.Figure()
     
-    # Crear colores basados en el rendimiento
-    colors = [COLORS['success'] if p > 0 else COLORS['warning'] for p in performance]
+    # Crear colores basados en el rendimiento - Solo azules
+    colors = [COLORS['primary'] if p > 0 else COLORS['accent'] for p in performance]
     
     fig.add_trace(go.Bar(
         name='Tu Centro',
@@ -776,13 +882,13 @@ def create_comparison_chart(center_data, sector_avg):
         name='Promedio Sector',
         x=metric_names,
         y=sector_values,
-        marker_color='rgba(0, 168, 204, 0.7)',
+        marker_color='rgba(100, 116, 139, 0.7)',  # Gris azulado para contraste
         opacity=0.7
     ))
     
     fig.update_layout(
         title=dict(text="Comparación vs. Promedio del Sector", 
-                  font=dict(size=16, color="#ffffff" if st.session_state.dark_mode else "#212529")),
+                  font=dict(size=16, color="#ffffff")),
         template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=450,
         barmode='group',
@@ -812,7 +918,7 @@ def create_category_performance_chart():
     
     fig.update_layout(
         title=dict(text="Distribución por Categorías", 
-                  font=dict(size=16, color="#ffffff" if st.session_state.dark_mode else "#212529")),
+                  font=dict(size=16, color="#ffffff")),
         template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=400,
         showlegend=True,
@@ -896,7 +1002,7 @@ def create_market_analysis_charts():
                     x=business_data['tipo_negocio'],
                     y=business_data['ingresos (€)'],
                     name='Ventas',
-                    marker_color=['#00d4aa', '#ff6b6b', '#00a8cc'],
+                    marker_color=['#2563eb', '#3b82f6', '#60a5fa'],
                     text=[f"{v:,.0f}€" for v in business_data['ingresos (€)']],
                     textposition='auto'
                 ),
@@ -909,7 +1015,7 @@ def create_market_analysis_charts():
                     x=business_data['tipo_negocio'],
                     y=business_data['afluencia'],
                     name='Visitantes',
-                    marker_color=['#ffa726', '#66bb6a', '#ab47bc'],
+                    marker_color=['#1d4ed8', '#1e40af', '#93c5fd'],
                     text=[f"{v:,.0f}" for v in business_data['afluencia']],
                     textposition='auto'
                 ),
@@ -940,7 +1046,7 @@ def create_market_analysis_charts():
                     x=zone_sorted['ingresos (€)'],
                     orientation='h',
                     name='Ventas por Zona',
-                    marker_color='#00d4aa',
+                     marker_color='#2563eb',
                     text=[f"{v:,.0f}€" for v in zone_sorted['ingresos (€)']],
                     textposition='auto'
                 ),
@@ -955,7 +1061,7 @@ def create_market_analysis_charts():
                     x=business_sorted['ocupacion_por_m2'],
                     orientation='h',
                     name='Ocupación por Tipo',
-                    marker_color='#ff6b6b',
+                     marker_color='#3b82f6',
                     text=[f"{v:.1f}%" for v in business_sorted['ocupacion_por_m2']],
                     textposition='auto'
                 ),
@@ -978,8 +1084,8 @@ def create_market_analysis_charts():
             market_df['eficiencia'] = market_df['ingresos_totales'] / market_df['trafico_peatonal']
             
             # Scatter plot por zona y tipo de negocio
-            colors_map = {'Madrid': '#00d4aa', 'Cataluña': '#00a8cc', 'Norte': '#ff6b6b', 
-                         'Sur': '#ffa726', 'Castilla-La Mancha': '#66bb6a', 'León': '#ab47bc'}
+            colors_map = {'Madrid': '#2563eb', 'Cataluña': '#3b82f6', 'Norte': '#60a5fa', 
+                         'Sur': '#1d4ed8', 'Castilla-La Mancha': '#1e40af', 'León': '#93c5fd'}
             
             for zona in market_df['zona_geografica'].unique():
                 data_zona = market_df[market_df['zona_geografica'] == zona]
@@ -1013,158 +1119,77 @@ def create_market_analysis_charts():
         print(f"Error creating market analysis charts: {e}")
         return {}
 
-# Navegación principal
+# Navegación principal - Sidebar elegante y moderno
 with st.sidebar:
-    # Header del sidebar con logo y título
+    # Header minimalista
     st.markdown("""
-    <div style="text-align: center; padding: 1rem 0; margin-bottom: 1rem;">
-        <h2 style="color: white; margin: 0; font-size: 1.5rem;">🏢 Harmon BI</h2>
-        <p style="color: #cccccc; margin: 0.5rem 0 0 0; font-size: 0.9rem;">Business Intelligence Dashboard</p>
+    <div style="text-align: center; padding: 2rem 0 1.5rem 0;">
+        <h1 style="color: white; margin: 0; font-size: 1.8rem; font-weight: 300; letter-spacing: 1px;">
+            Harmon BI
+        </h1>
+        <div style="width: 60px; height: 2px; background: linear-gradient(90deg, #2563eb, #60a5fa); margin: 0.8rem auto; border-radius: 1px;"></div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Toggle para modo oscuro
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        dark_mode_toggle = st.checkbox("🌙", value=st.session_state.dark_mode, key="dark_mode_toggle")
-    with col2:
-        st.markdown(f"<p style='color: white; margin: 0; padding-top: 0.2rem;'>{'Modo Oscuro' if dark_mode_toggle else 'Modo Claro'}</p>", unsafe_allow_html=True)
+    # Toggle para modo oscuro - diseño elegante
+    st.markdown(f"""
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+        <div style="background: {'#0f172a' if st.session_state.dark_mode else '#1e293b'}; 
+                    padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #2563eb;">
+            <span style="color: #cbd5e1; font-size: 0.9rem;">🌙 {'Oscuro' if st.session_state.dark_mode else 'Claro'}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Checkbox oculto para el toggle
+    dark_mode_toggle = st.checkbox("Modo oscuro", value=st.session_state.dark_mode, key="dark_mode_toggle", label_visibility="hidden")
     
     # Actualizar el estado si cambió
     if dark_mode_toggle != st.session_state.dark_mode:
         st.session_state.dark_mode = dark_mode_toggle
         st.rerun()
     
-    st.markdown("---")
-    
-    # Menú de navegación mejorado
-    selected = option_menu(
-        menu_title="📍 Navegación",
-        options=["Cargar Datos", "Dashboard", "Análisis vs Mercado", "Datos del Mercado", "Configuración"],
-        icons=["cloud-upload", "speedometer2", "graph-up", "database", "gear"],
-        menu_icon="compass",
-        default_index=1,
-        orientation="vertical",
-        styles={
-            "container": {
-                "padding": "0.5rem 0",
-                "background-color": "#1a1a1a" if st.session_state.dark_mode else "#262730",
-                "border-radius": "12px",
-                "margin": "0.5rem 0",
-                "border": f"2px solid {'#3e3e42' if st.session_state.dark_mode else '#495057'}"
-            },
-            "icon": {
-                "color": "#ffffff", 
-                "font-size": "18px",
-                "margin-right": "0.75rem"
-            },
-            "nav-link": {
-                "font-size": "15px",
-                "text-align": "left",
-                "margin": "4px 8px",
-                "padding": "0.75rem 1rem",
-                "border-radius": "8px",
-                "color": "#ffffff",
-                "background-color": "transparent",
-                "--hover-color": "#0078d4" if st.session_state.dark_mode else "#2E86AB",
-                "transition": "all 0.3s ease",
-                "white-space": "nowrap",
-                "border": "1px solid transparent"
-            },
-            "nav-link-selected": {
-                "background-color": "#0078d4" if st.session_state.dark_mode else "#2E86AB",
-                "color": "#ffffff",
-                "font-weight": "600",
-                "box-shadow": f"0 4px 12px rgba({'7, 120, 212' if st.session_state.dark_mode else '46, 134, 171'}, 0.4)",
-                "border": f"1px solid {'#106ebe' if st.session_state.dark_mode else '#1a5f7a'}"
-            },
-        }
-    )
-    
-    st.markdown("---")
-    
-    # Panel de información del centro actual
-    st.markdown("### 📊 Centro Actual")
-    if st.session_state.current_center:
-        st.markdown(f"""
-        <div style="background: {'#2d2d30' if st.session_state.dark_mode else '#e3f2fd'}; 
-                    padding: 1rem; border-radius: 8px; border-left: 4px solid {'#0078d4' if st.session_state.dark_mode else '#2E86AB'};">
-            <p style="color: {'#ffffff' if st.session_state.dark_mode else '#1565c0'}; margin: 0; font-weight: 600;">
-                ✅ {st.session_state.current_center}
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown(f"""
-        <div style="background: {'#2d2d30' if st.session_state.dark_mode else '#f3e5f5'}; 
-                    padding: 1rem; border-radius: 8px; border-left: 4px solid {'#666' if st.session_state.dark_mode else '#9c27b0'};">
-            <p style="color: {'#cccccc' if st.session_state.dark_mode else '#7b1fa2'}; margin: 0;">
-                📝 No hay centro cargado
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Panel de estadísticas
-    st.markdown("### 📈 Estadísticas")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.metric(
-            label="Centros", 
-            value=len(st.session_state.centers_data),
-            delta=None
-        )
-    with col2:
-        sector_avg = get_sector_averages()
-        st.metric(
-            label="Mercado", 
-            value=f"{sector_avg.get('ventas_totales', 0)/1000:.0f}k€",
-            delta=None
-        )
-    
-    # Información adicional
-    st.markdown("---")
-    with st.expander("ℹ️ Acerca de", expanded=False):
-        st.markdown(f"""
-        **Harmon BI Dashboard v1.0**
-        
-        • 🎨 Modo {'Oscuro' if st.session_state.dark_mode else 'Claro'} Activo
-        • 🖥️ Optimizado para Mac/Windows
-        • 📊 Datos en tiempo real
-        • 🔒 Privacidad garantizada
-        
-        *Desarrollado para análisis de centros comerciales*
-        """)
-    
-    # Footer del sidebar
-    st.markdown("---")
+    # Navegación minimalista sin iconos
     st.markdown("""
-    <div style="text-align: center; padding: 0.5rem 0; opacity: 0.7;">
-        <small style="color: #cccccc;">💡 Tip: Usa Ctrl+R para refrescar</small>
+    <div style="margin: 1rem 0;">
+        <div style="color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; text-align: center;">
+            Navegación
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Menú de navegación elegante sin iconos
+    nav_options = ["Cargar Datos", "Dashboard", "Análisis vs Mercado", "Datos del Mercado", "Configuración"]
+    
+    # Crear botones de navegación elegantes
+    selected = st.session_state.selected_page
+    
+    for i, option in enumerate(nav_options):
+        is_selected = (option == st.session_state.selected_page)
+        
+        # Estilo dinámico basado en si está seleccionado
+        button_key = f"nav_{option.replace(' ', '_')}"
+        
+        if st.button(
+            option, 
+            key=button_key, 
+            use_container_width=True,
+            type="primary" if is_selected else "secondary"
+        ):
+            st.session_state.selected_page = option
+            selected = option
+            st.rerun()
+    
+    # Espaciador elegante
+    st.markdown("""
+    <div style="margin: 2rem 0 1rem 0;">
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, #334155, transparent); margin: 0 1rem;"></div>
     </div>
     """, unsafe_allow_html=True)
 
-# Navegación alternativa horizontal (fallback para problemas de sidebar)
+# Si no hay selección, usar Dashboard por defecto
 if not selected:
-    st.markdown("### 🏢 Harmon BI Dashboard - Navegación")
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        if st.button("📤 Cargar Datos", key="nav1"):
-            selected = "Cargar Datos"
-    with col2:
-        if st.button("📊 Dashboard", key="nav2"):
-            selected = "Dashboard"
-    with col3:
-        if st.button("📈 Análisis vs Mercado", key="nav3"):
-            selected = "Análisis vs Mercado"
-    with col4:
-        if st.button("🗄️ Datos del Mercado", key="nav4"):
-            selected = "Datos del Mercado"
-    with col5:
-        if st.button("⚙️ Configuración", key="nav5"):
-            selected = "Configuración"
-    
-    if not selected:
-        selected = "Dashboard"  # Default
+    selected = "Dashboard"
 
 # Página de Cargar Datos
 if selected == "Cargar Datos":
@@ -1515,8 +1540,8 @@ elif selected == "Análisis vs Mercado":
                 theta=categories,
                 fill='toself',
                 name='Tu Centro',
-                line_color='#00d4aa',
-                fillcolor='rgba(0, 212, 170, 0.3)'
+                line_color='#2563eb',
+                fillcolor='rgba(37, 99, 235, 0.3)'
             ))
             
             fig.add_trace(go.Scatterpolar(
@@ -1524,8 +1549,8 @@ elif selected == "Análisis vs Mercado":
                 theta=categories,
                 fill='toself',
                 name='Promedio Mercado',
-                line_color='#00a8cc',
-                fillcolor='rgba(0, 168, 204, 0.2)'
+                line_color='#64748b',
+                fillcolor='rgba(100, 116, 139, 0.2)'
             ))
             
             fig.update_layout(
@@ -1555,7 +1580,7 @@ elif selected == "Análisis vs Mercado":
             performances = [m['performance'] for m in comparison_metrics]
             
             # Crear colores basados en el rendimiento
-            colors = ['#00d4aa' if p > 0 else '#ff4757' if p < -10 else '#ffa726' for p in performances]
+            colors = ['#2563eb' if p > 0 else '#64748b' if p < -10 else '#3b82f6' for p in performances]
             
             fig = go.Figure()
             
@@ -1827,7 +1852,7 @@ elif selected == "Análisis vs Mercado":
                 y=quarterly_avg['ingresos_totales'],
                 mode='lines+markers',
                 name='Ingresos Totales',
-                line=dict(color='#00d4aa', width=3),
+                line=dict(color='#2563eb', width=3),
                 marker=dict(size=10)
             ))
             
@@ -1912,7 +1937,7 @@ elif selected == "Datos del Mercado":
         fig = go.Figure(data=[go.Bar(
             x=metrics,
             y=values,
-            marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a', '#ab47bc'],
+            marker_color=CHART_COLORS,
             text=[f"{v:.1f}" for v in values],
             textposition='auto',
             textfont=dict(color='#212529', size=12)
@@ -1943,8 +1968,8 @@ elif selected == "Datos del Mercado":
             theta=categories,
             fill='toself',
             name='Promedio del Mercado',
-            line_color='#00a8cc',
-            fillcolor='rgba(0, 168, 204, 0.3)'
+            line_color='#64748b',
+            fillcolor='rgba(100, 116, 139, 0.3)'
         ))
         
         fig.update_layout(
@@ -2033,14 +2058,14 @@ elif selected == "Datos del Mercado":
         fig.add_trace(
             go.Scatter(x=months, y=market_trends['trafico'], 
                       mode='lines+markers', name='Tráfico',
-                      line=dict(color='#00d4aa', width=3)),
+                      line=dict(color='#2563eb', width=3)),
             row=1, col=1
         )
         
         fig.add_trace(
             go.Scatter(x=months, y=market_trends['ventas'], 
                       mode='lines+markers', name='Ventas',
-                      line=dict(color='#ff6b6b', width=3)),
+                      line=dict(color='#3b82f6', width=3)),
             row=2, col=1
         )
         
@@ -2064,14 +2089,14 @@ elif selected == "Datos del Mercado":
         fig.add_trace(
             go.Scatter(x=months, y=market_trends['ocupacion'], 
                       mode='lines+markers', name='Ocupación',
-                      line=dict(color='#00a8cc', width=3)),
+                      line=dict(color='#60a5fa', width=3)),
             row=1, col=1
         )
         
         fig.add_trace(
             go.Scatter(x=months, y=market_trends['conversion'], 
                       mode='lines+markers', name='Conversión',
-                      line=dict(color='#ffa726', width=3)),
+                      line=dict(color='#1d4ed8', width=3)),
             row=2, col=1
         )
         
@@ -2095,7 +2120,7 @@ elif selected == "Datos del Mercado":
             fig = go.Figure(data=[go.Bar(
                 x=zone_data['zona_geografica'],
                 y=zone_data['ingresos (€)'],
-                marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a'],
+                marker_color=CHART_COLORS[:5],
                 text=[f"{v:,.0f}" for v in zone_data['ingresos (€)']],
                 textposition='auto',
                 textfont=dict(color='#212529', size=10)
@@ -2116,7 +2141,7 @@ elif selected == "Datos del Mercado":
             fig = go.Figure(data=[go.Bar(
                 x=zone_data['zona_geografica'],
                 y=zone_data['ocupacion_por_m2'],
-                marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a'],
+                marker_color=CHART_COLORS[:5],
                 text=[f"{v:.2f}" for v in zone_data['ocupacion_por_m2']],
                 textposition='auto',
                 textfont=dict(color='#212529', size=10)
@@ -2160,7 +2185,7 @@ elif selected == "Datos del Mercado":
             fig = go.Figure(data=[go.Bar(
                 x=business_data['tipo_negocio'],
                 y=business_data['ingresos (€)'],
-                marker_color=['#00d4aa', '#00a8cc', '#ff6b6b'],
+                marker_color=CHART_COLORS[:3],
                 text=[f"{v:,.0f}" for v in business_data['ingresos (€)']],
                 textposition='auto',
                 textfont=dict(color='#212529', size=10)
@@ -2181,7 +2206,7 @@ elif selected == "Datos del Mercado":
             fig = go.Figure(data=[go.Bar(
                 x=business_data['tipo_negocio'],
                 y=business_data['afluencia'],
-                marker_color=['#00d4aa', '#00a8cc', '#ff6b6b'],
+                marker_color=CHART_COLORS[:3],
                 text=[f"{v:,.0f}" for v in business_data['afluencia']],
                 textposition='auto',
                 textfont=dict(color='#212529', size=10)
