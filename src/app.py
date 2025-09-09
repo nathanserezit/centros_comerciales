@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Reobservar cuando cambia el contenido
     setInterval(ensureSidebarVisibility, 3000);
+    
 });
 </script>
 """, unsafe_allow_html=True)
@@ -371,6 +372,111 @@ def get_theme_css(dark_mode=False):
             background: linear-gradient(135deg, var(--button-hover) 0%, var(--button-bg) 100%);
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(46, 134, 171, 0.4);
+        }}
+        
+        /* Botón Cargar Datos - AZUL personalizado */
+        .stButton > button[kind="primary"][data-testid*="load_data_btn"],
+        button[kind="primary"][data-testid*="load_data_btn"] {{
+            background: #2563eb !important;
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            border: 2px solid #2563eb !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 1.5rem !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+        }}
+        
+        .stButton > button[kind="primary"][data-testid*="load_data_btn"]:hover,
+        button[kind="primary"][data-testid*="load_data_btn"]:hover {{
+            background: #1d4ed8 !important;
+            background-color: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
+        }}
+        
+        /* Botón Procesar Datos - VERDE */
+        .stButton > button[kind="primary"][data-testid*="process_data_btn"],
+        button[kind="primary"][data-testid*="process_data_btn"] {{
+            background: #10b981 !important;
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+            border: 2px solid #10b981 !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 1.5rem !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+        }}
+        
+        .stButton > button[kind="primary"][data-testid*="process_data_btn"]:hover,
+        button[kind="primary"][data-testid*="process_data_btn"]:hover {{
+            background: #059669 !important;
+            background-color: #059669 !important;
+            border-color: #059669 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+        }}
+        
+        /* File uploader - AZUL */
+        .stFileUploader > div > div,
+        .stFileUploader > div > div > div,
+        div[data-testid*="file_uploader_main"] > div,
+        div[data-testid*="file_uploader_main"] > div > div,
+        .stFileUploader div[data-testid*="file_uploader_main"] {{
+            background: #2563eb !important;
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            border: 2px solid #2563eb !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 1.5rem !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+            text-align: center !important;
+            cursor: pointer !important;
+        }}
+        
+        .stFileUploader > div > div:hover,
+        .stFileUploader > div > div > div:hover,
+        div[data-testid*="file_uploader_main"] > div:hover,
+        div[data-testid*="file_uploader_main"] > div > div:hover,
+        .stFileUploader div[data-testid*="file_uploader_main"]:hover {{
+            background: #1d4ed8 !important;
+            background-color: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
+        }}
+        
+        /* TEXTO BLANCO - Selectores universales */
+        .stFileUploader *,
+        .stFileUploader > div *,
+        .stFileUploader > div > div *,
+        .stFileUploader > div > div > div *,
+        .stFileUploader > div > div > div > div *,
+        div[data-testid*="file_uploader_main"] *,
+        div[data-testid*="file_uploader_main"] > div *,
+        div[data-testid*="file_uploader_main"] > div > div *,
+        .stFileUploader div[data-testid*="file_uploader_main"] * {{
+            color: #ffffff !important;
+        }}
+        
+        /* Forzar colores en todos los elementos del file uploader */
+        .stFileUploader,
+        .stFileUploader > div,
+        .stFileUploader > div > div,
+        .stFileUploader > div > div > div,
+        .stFileUploader > div > div > div > div {{
+            color: #ffffff !important;
         }}
         
         /* Botones secundarios para sidebar */
@@ -1317,83 +1423,59 @@ if selected == "Dashboard":
     st.title("🏢 Harmon BI Dashboard")
     st.markdown("---")
     
-    # Header con botón de carga de datos
-    col1, col2, col3 = st.columns([2, 1, 1])
+    # Header con botones de carga de datos
+    col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
     with col1:
         st.header("📈 Dashboard - Mi Centro")
     with col2:
         period = st.selectbox("Período", ["Mensual", "Trimestral", "Anual"], key="dashboard_period")
     with col3:
-        if st.button("📊 Cargar Datos", type="primary", use_container_width=True):
-            st.session_state.show_upload_form = True
-    
-    # Formulario de carga de datos expandible
-    if st.session_state.get('show_upload_form', False):
-        st.markdown("---")
-        with st.expander("📊 Cargar Datos del Centro Comercial", expanded=True):
-            st.markdown("### Sube tu archivo Excel o CSV con las métricas de tu centro comercial")
-            
-            # Formulario de carga integrado
-            with st.form("dashboard_upload_form"):
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    center_name = st.text_input(
-                        "Nombre del Centro Comercial",
-                        placeholder="Ej. Centro Plaza Mayor"
+        # Botón personalizado para cargar datos
+        if st.button("📁 Cargar Datos", type="primary", use_container_width=True, key="load_data_btn"):
+            st.session_state.show_file_upload = True
+            st.rerun()
+        
+        # File uploader que aparece cuando se presiona el botón
+        if st.session_state.get('show_file_upload', False):
+            uploaded_file = st.file_uploader(
+                "Selecciona tu archivo",
+                type=['xlsx', 'csv'],
+                help="Excel (.xlsx) o CSV (.csv) - Máximo 10MB",
+                key="file_uploader_main"
+            )
+            if uploaded_file is not None:
+                st.session_state.uploaded_file = uploaded_file
+                st.session_state.show_file_upload = False
+                st.success(f"✅ Datos cargados: {uploaded_file.name}")
+                st.rerun()
+    with col4:
+        if st.button("⚙️ Procesar Datos", type="primary", use_container_width=True, key="process_data_btn"):
+            # Verificar si hay archivo cargado
+            if 'uploaded_file' not in st.session_state or st.session_state.uploaded_file is None:
+                st.warning("⚠️ Primero debes cargar un archivo")
+            else:
+                # Procesar directamente sin formularios
+                with st.spinner("Procesando datos..."):
+                    # Usar nombre por defecto basado en el archivo
+                    file_name = st.session_state.uploaded_file.name
+                    center_name = file_name.split('.')[0]  # Nombre sin extensión
+                    center_type = "Urbano"  # Tipo por defecto
+                    
+                    center_data, message = process_uploaded_file(
+                        st.session_state.uploaded_file, 
+                        center_name, 
+                        center_type
                     )
-                
-                with col2:
-                    center_type = st.selectbox(
-                        "Tipo de Centro",
-                        ["Urbano", "Suburbano", "Regional", "Outlet", "Especializado"]
-                    )
-                
-                # Área de carga de archivo
-                uploaded_file = st.file_uploader(
-                    "Arrastra tu archivo aquí o haz clic para seleccionar",
-                    type=['xlsx', 'csv'],
-                    help="Excel (.xlsx) o CSV (.csv) - Máximo 10MB"
-                )
-                
-                # Información sobre formato requerido
-                st.info("""
-                **Columnas requeridas en el archivo:**
-                - fecha: Fecha de los datos (YYYY-MM-DD)
-                - trafico_peatonal: Número de visitantes
-                - ventas_por_m2: Ventas por metro cuadrado
-                - tasa_ocupacion: Porcentaje de ocupación
-                - tiempo_permanencia: Minutos promedio de permanencia
-                - tasa_conversion: Porcentaje de conversión
-                - ingresos_totales: Ingresos totales del período
-                """)
-                
-                # Botones de acción
-                col1, col2, col3 = st.columns([1, 1, 1])
-                with col1:
-                    submitted = st.form_submit_button("🚀 Procesar Datos", type="primary")
-                with col2:
-                    if st.form_submit_button("❌ Cancelar"):
-                        st.session_state.show_upload_form = False
+                    
+                    if center_data:
+                        st.session_state.centers_data[center_name] = center_data
+                        st.session_state.current_center = center_name
+                        st.session_state.uploaded_file = None
+                        st.success(f"✅ {message}")
+                        st.success("🎉 ¡Datos procesados exitosamente! Visualizando métricas...")
                         st.rerun()
-                
-                # Procesamiento de datos
-                if submitted and uploaded_file is not None and center_name:
-                    with st.spinner("Procesando datos..."):
-                        center_data, message = process_uploaded_file(uploaded_file, center_name, center_type)
-                        
-                        if center_data:
-                            st.session_state.centers_data[center_name] = center_data
-                            st.session_state.current_center = center_name
-                            st.session_state.show_upload_form = False
-                            st.success(f"✅ {message}")
-                            st.success("🎉 ¡Datos cargados exitosamente! Visualizando métricas...")
-                            st.rerun()
-                        else:
-                            st.error(f"❌ {message}")
-                
-                elif submitted:
-                    st.warning("⚠️ Por favor, completa todos los campos y sube un archivo")
+                    else:
+                        st.error(f"❌ {message}")
     
     if st.session_state.current_center and st.session_state.current_center in st.session_state.centers_data:
         center_data = st.session_state.centers_data[st.session_state.current_center]
@@ -1549,51 +1631,10 @@ if selected == "Dashboard":
                     st.markdown('</div>', unsafe_allow_html=True)
     
     else:
-        # Estado sin datos - Llamada a la acción más atractiva
+        # Estado sin datos - Mostrar solo los botones de carga
         st.markdown("---")
-        st.markdown("""
-        <div style="text-align: center; padding: 3rem 1rem;">
-            <h2 style="color: var(--text-color); margin-bottom: 1rem;">🏢 Bienvenido a Harmon BI</h2>
-            <p style="color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 2rem;">
-                Comienza a analizar el rendimiento de tu centro comercial
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Botón central de carga de datos
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            if st.button("🚀 Cargar Mis Datos Ahora", type="primary", use_container_width=True, key="main_upload_btn"):
-                st.session_state.show_upload_form = True
-                st.rerun()
-        
-        # Información sobre qué se puede hacer
-        st.markdown("---")
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            st.markdown("""
-            <div class="kpi-card" style="text-align: center;">
-                <h3>📊 Análisis Completo</h3>
-                <p>Visualiza KPIs, tendencias y comparaciones con el mercado</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown("""
-            <div class="kpi-card" style="text-align: center;">
-                <h3>📈 Benchmarking</h3>
-                <p>Compara tu rendimiento con promedios del sector</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
-            st.markdown("""
-            <div class="kpi-card" style="text-align: center;">
-                <h3>🎯 Insights</h3>
-                <p>Obtén recomendaciones basadas en datos reales</p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown("### 📊 No hay datos cargados")
+        st.info("Usa los botones de arriba para cargar y procesar tus datos del centro comercial.")
 
     # Insights del mercado
     st.subheader("💡 Insights del Mercado")
