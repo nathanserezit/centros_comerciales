@@ -297,7 +297,7 @@ def get_theme_css(dark_mode=False):
         section[data-testid="stSidebar"] h2, 
         section[data-testid="stSidebar"] h3 {{
             color: var(--sidebar-text-color) !important;
-            text-align: center;
+        text-align: center;
         }}
         
         /* Textos específicos del sidebar */
@@ -351,7 +351,7 @@ def get_theme_css(dark_mode=False):
         
         /* Excepciones para elementos que deben mantener colores específicos */
         section[data-testid="stMain"] .stButton button {{
-            color: #ffffff !important;
+        color: #ffffff !important;
         }}
         
         /* Botones principales */
@@ -418,11 +418,38 @@ def get_theme_css(dark_mode=False):
             color: var(--text-primary) !important;
         }}
         
+        .stSelectbox > div > div > div {{
+            color: var(--text-primary) !important;
+        }}
+        
         .stTextInput > div > div > input {{
             background-color: var(--input-bg) !important;
             border: 2px solid var(--border-color) !important;
             border-radius: 8px !important;
             color: var(--text-primary) !important;
+        }}
+        
+        .stTextInput > div > label {{
+            color: var(--text-color) !important;
+        }}
+        
+        .stSelectbox > div > label {{
+            color: var(--text-color) !important;
+        }}
+        
+        /* File uploader */
+        .stFileUploader > div > label {{
+            color: var(--text-color) !important;
+        }}
+        
+        .stFileUploader > div > div {{
+            border: 2px dashed var(--border-color) !important;
+            border-radius: 8px !important;
+            background-color: var(--input-bg) !important;
+        }}
+        
+        .stFileUploader > div > div > div {{
+            color: var(--text-color) !important;
         }}
         
         /* Títulos y texto */
@@ -508,16 +535,29 @@ def get_theme_css(dark_mode=False):
         /* Expandir elementos */
         .streamlit-expanderHeader {{
             background-color: var(--bg-secondary) !important;
-            color: var(--text-primary) !important;
+            color: var(--text-color) !important;
             border: 1px solid var(--border-color) !important;
             border-radius: 8px !important;
         }}
         
         .streamlit-expanderContent {{
             background-color: var(--card-bg) !important;
-            color: var(--text-primary) !important;
+            color: var(--text-color) !important;
             border: 1px solid var(--border-color) !important;
             border-radius: 0 0 8px 8px !important;
+        }}
+        
+        /* Expander text */
+        [data-testid="stExpander"] .streamlit-expanderHeader p {{
+            color: var(--text-color) !important;
+        }}
+        
+        [data-testid="stExpander"] .streamlit-expanderContent p {{
+            color: var(--text-color) !important;
+        }}
+        
+        [data-testid="stExpander"] .streamlit-expanderContent * {{
+            color: var(--text-color) !important;
         }}
         
         /* CSS específico para navegadores webkit (Safari/Mac) */
@@ -824,17 +864,24 @@ def create_kpi_chart(data, sector_avg, metric_name, title, unit):
             font=dict(color=trend_color, size=12)
         )
     
+    # Configurar colores según el modo
+    title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+    bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+    axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+    
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#ffffff")),
+        title=dict(text=title, font=dict(size=16, color=title_color)),
         xaxis_title="Fecha",
         yaxis_title=f"{title} ({unit})",
+        xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+        yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
         template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=350,
         margin=dict(l=0, r=0, t=60, b=0),
         hovermode='x unified',
         showlegend=True,
-        plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
-        paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color
     )
     
     return fig
@@ -875,7 +922,7 @@ def create_comparison_chart(center_data, sector_avg):
         marker_color=colors,
         text=[f"{p:+.1f}%" for p in performance],
         textposition='auto',
-        textfont=dict(color='#212529', size=10)
+        textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=10)
     ))
     
     fig.add_trace(go.Bar(
@@ -886,17 +933,24 @@ def create_comparison_chart(center_data, sector_avg):
         opacity=0.7
     ))
     
+    # Configurar colores según el modo
+    title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+    bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+    axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+    
     fig.update_layout(
         title=dict(text="Comparación vs. Promedio del Sector", 
-                  font=dict(size=16, color="#ffffff")),
+                  font=dict(size=16, color=title_color)),
+        xaxis=dict(tickfont=dict(color=axis_text_color)),
+        yaxis=dict(tickfont=dict(color=axis_text_color)),
         template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=450,
         barmode='group',
         xaxis_tickangle=-45,
         hovermode='x unified',
         showlegend=True,
-        plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
-        paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color
     )
     
     return fig
@@ -913,12 +967,17 @@ def create_category_performance_chart():
         hole=0.4,
         marker_colors=colors,
         textinfo='label+percent',
-        textfont=dict(size=12, color='#212529')
+        textfont=dict(size=12, color='#ffffff' if st.session_state.dark_mode else '#212529')
     )])
+    
+    # Configurar colores según el modo
+    title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+    bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+    text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
     
     fig.update_layout(
         title=dict(text="Distribución por Categorías", 
-                  font=dict(size=16, color="#ffffff")),
+                  font=dict(size=16, color=title_color)),
         template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=400,
         showlegend=True,
@@ -927,10 +986,16 @@ def create_category_performance_chart():
             yanchor="middle",
             y=0.5,
             xanchor="left",
-            x=1.01
+            x=1.01,
+            font=dict(color=text_color)
         ),
-        plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
-        paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color
+    )
+    
+    # Update pie chart text colors
+    fig.update_traces(
+        textfont=dict(size=12, color=text_color)
     )
     
     return fig
@@ -956,14 +1021,22 @@ def create_market_analysis_charts():
                 marker_color=CHART_COLORS,
                 text=[f"{v:,.0f}€" for v in zone_data['ingresos (€)']],
                 textposition='auto',
-                textfont=dict(color='#212529', size=12)
+                textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
             ))
+            
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
             fig_zones.update_layout(
-                title="💰 Ventas Totales por Zona Geográfica",
+                title=dict(text="💰 Ventas Totales por Zona Geográfica", font=dict(size=16, color=title_color)),
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Ventas Totales (€)",
-                template="plotly_white",
-                height=400
+                 xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                 yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                 template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                 height=400,
+                 plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                 paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
             )
             charts['ventas_zonas'] = fig_zones
         
@@ -977,14 +1050,22 @@ def create_market_analysis_charts():
                 marker_color=CHART_COLORS,
                 text=[f"{v:.1f}%" for v in zone_data['ocupacion_por_m2']],
                 textposition='auto',
-                textfont=dict(color='#212529', size=12)
+                textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
             ))
+            
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
             fig_ocupacion.update_layout(
-                title="🏢 Tasa de Ocupación por Zona Geográfica",
+                title=dict(text="🏢 Tasa de Ocupación por Zona Geográfica", font=dict(size=16, color=title_color)),
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Tasa de Ocupación (%)",
-                template="plotly_white",
-                height=400
+                 xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                 yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                 template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                 height=400,
+                 plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                 paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
             )
             charts['ocupacion_zonas'] = fig_ocupacion
         
@@ -1004,7 +1085,8 @@ def create_market_analysis_charts():
                     name='Ventas',
                     marker_color=['#2563eb', '#3b82f6', '#60a5fa'],
                     text=[f"{v:,.0f}€" for v in business_data['ingresos (€)']],
-                    textposition='auto'
+                    textposition='auto',
+                    textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
                 ),
                 row=1, col=1
             )
@@ -1017,16 +1099,28 @@ def create_market_analysis_charts():
                     name='Visitantes',
                     marker_color=['#1d4ed8', '#1e40af', '#93c5fd'],
                     text=[f"{v:,.0f}" for v in business_data['afluencia']],
-                    textposition='auto'
+                    textposition='auto',
+                    textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
                 ),
                 row=1, col=2
             )
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            
             fig_business.update_layout(
-                title="🎯 Análisis por Tipo de Negocio",
-                template="plotly_white",
+                title=dict(text="🎯 Análisis por Tipo de Negocio", font=dict(size=16, color=title_color)),
+                template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
                 height=400,
-                showlegend=False
+                showlegend=False,
+                plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                # Configurar colores de ejes para ambos subplots
+                xaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                yaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                xaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                yaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color))
             )
             charts['business_comparison'] = fig_business
         
@@ -1048,7 +1142,8 @@ def create_market_analysis_charts():
                     name='Ventas por Zona',
                      marker_color='#2563eb',
                     text=[f"{v:,.0f}€" for v in zone_sorted['ingresos (€)']],
-                    textposition='auto'
+                    textposition='auto',
+                    textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
                 ),
                 row=1, col=1
             )
@@ -1063,16 +1158,35 @@ def create_market_analysis_charts():
                     name='Ocupación por Tipo',
                      marker_color='#3b82f6',
                     text=[f"{v:.1f}%" for v in business_sorted['ocupacion_por_m2']],
-                    textposition='auto'
+                    textposition='auto',
+                    textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
                 ),
                 row=2, col=1
             )
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            
             fig_ranking.update_layout(
-                title="📊 Rankings de Rendimiento",
-                template="plotly_white",
+                title=dict(text="📊 Rankings de Rendimiento", font=dict(size=16, color=title_color)),
+                template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
                 height=600,
-                showlegend=False
+                showlegend=False,
+                plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                # Configurar colores de ejes para ambos subplots
+                xaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                yaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                xaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                yaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+                # Configurar colores de títulos de subplots
+                annotations=[
+                    dict(text="🏆 Top Zonas por Rendimiento", x=0.5, y=0.95, xref="paper", yref="paper", 
+                         showarrow=False, font=dict(size=14, color=title_color)),
+                    dict(text="🎯 Top Tipos de Negocio por Ocupación", x=0.5, y=0.45, xref="paper", yref="paper", 
+                         showarrow=False, font=dict(size=14, color=title_color))
+                ]
             )
             charts['rankings'] = fig_ranking
         
@@ -1104,12 +1218,19 @@ def create_market_analysis_charts():
                     hovertemplate='%{text}<br>Visitantes: %{x}<br>Ventas: %{y:,.0f}€<extra></extra>'
                 ))
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
             fig_efficiency.update_layout(
-                title="⚡ Eficiencia: Ventas vs Visitantes (tamaño = ocupación)",
+                title=dict(text="⚡ Eficiencia: Ventas vs Visitantes (tamaño = ocupación)", font=dict(size=16, color=title_color)),
                 xaxis_title="Visitantes",
                 yaxis_title="Ventas (€)",
-                template="plotly_white",
-                height=500
+                 xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                 yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                 template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                 height=500,
+                 plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+                 paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
             )
             charts['efficiency'] = fig_efficiency
         
@@ -1159,7 +1280,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     
     # Menú de navegación elegante sin iconos
-    nav_options = ["Cargar Datos", "Dashboard", "Análisis vs Mercado", "Datos del Mercado", "Configuración"]
+    nav_options = ["Dashboard", "Análisis vs Mercado", "Configuración"]
     
     # Crear botones de navegación elegantes
     selected = st.session_state.selected_page
@@ -1191,68 +1312,88 @@ with st.sidebar:
 if not selected:
     selected = "Dashboard"
 
-# Página de Cargar Datos
-if selected == "Cargar Datos":
-    st.title("🏢 Harmon BI Dashboard")
-    st.markdown("---")
-    
-    st.header("📊 Cargar Datos del Centro Comercial")
-    st.subheader("Sube tu archivo Excel o CSV con las métricas de tu centro comercial")
-    
-    # Formulario de carga
-    with st.form("upload_form"):
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            center_name = st.text_input(
-                "Nombre del Centro Comercial",
-                placeholder="Ej. Centro Plaza Mayor"
-            )
-        
-        with col2:
-            center_type = st.selectbox(
-                "Tipo de Centro",
-                ["Urbano", "Suburbano", "Regional", "Outlet", "Especializado"]
-            )
-        
-        # Área de carga de archivo
-        st.markdown('<div class="upload-box">', unsafe_allow_html=True)
-        uploaded_file = st.file_uploader(
-            "Arrastra tu archivo aquí o haz clic para seleccionar",
-            type=['xlsx', 'csv'],
-            help="Excel (.xlsx) o CSV (.csv) - Máximo 10MB"
-        )
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Botón de procesamiento
-        submitted = st.form_submit_button("Procesar Datos", type="primary")
-        
-        if submitted and uploaded_file is not None and center_name:
-            with st.spinner("Procesando datos..."):
-                center_data, message = process_uploaded_file(uploaded_file, center_name, center_type)
-                
-                if center_data:
-                    st.session_state.centers_data[center_name] = center_data
-                    st.session_state.current_center = center_name
-                    st.success(f"✅ {message}")
-                    st.success("🎉 ¡Datos cargados exitosamente! Ve al Dashboard para visualizar tus métricas.")
-                else:
-                    st.error(f"❌ {message}")
-        
-        elif submitted:
-            st.warning("⚠️ Por favor, completa todos los campos y sube un archivo")
-
 # Página de Dashboard
-elif selected == "Dashboard":
+if selected == "Dashboard":
     st.title("🏢 Harmon BI Dashboard")
     st.markdown("---")
     
-    # Filtro de período
-    col1, col2 = st.columns([3, 1])
+    # Header con botón de carga de datos
+    col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
         st.header("📈 Dashboard - Mi Centro")
     with col2:
         period = st.selectbox("Período", ["Mensual", "Trimestral", "Anual"], key="dashboard_period")
+    with col3:
+        if st.button("📊 Cargar Datos", type="primary", use_container_width=True):
+            st.session_state.show_upload_form = True
+    
+    # Formulario de carga de datos expandible
+    if st.session_state.get('show_upload_form', False):
+        st.markdown("---")
+        with st.expander("📊 Cargar Datos del Centro Comercial", expanded=True):
+            st.markdown("### Sube tu archivo Excel o CSV con las métricas de tu centro comercial")
+            
+            # Formulario de carga integrado
+            with st.form("dashboard_upload_form"):
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    center_name = st.text_input(
+                        "Nombre del Centro Comercial",
+                        placeholder="Ej. Centro Plaza Mayor"
+                    )
+                
+                with col2:
+                    center_type = st.selectbox(
+                        "Tipo de Centro",
+                        ["Urbano", "Suburbano", "Regional", "Outlet", "Especializado"]
+                    )
+                
+                # Área de carga de archivo
+                uploaded_file = st.file_uploader(
+                    "Arrastra tu archivo aquí o haz clic para seleccionar",
+                    type=['xlsx', 'csv'],
+                    help="Excel (.xlsx) o CSV (.csv) - Máximo 10MB"
+                )
+                
+                # Información sobre formato requerido
+                st.info("""
+                **Columnas requeridas en el archivo:**
+                - fecha: Fecha de los datos (YYYY-MM-DD)
+                - trafico_peatonal: Número de visitantes
+                - ventas_por_m2: Ventas por metro cuadrado
+                - tasa_ocupacion: Porcentaje de ocupación
+                - tiempo_permanencia: Minutos promedio de permanencia
+                - tasa_conversion: Porcentaje de conversión
+                - ingresos_totales: Ingresos totales del período
+                """)
+                
+                # Botones de acción
+                col1, col2, col3 = st.columns([1, 1, 1])
+                with col1:
+                    submitted = st.form_submit_button("🚀 Procesar Datos", type="primary")
+                with col2:
+                    if st.form_submit_button("❌ Cancelar"):
+                        st.session_state.show_upload_form = False
+                        st.rerun()
+                
+                # Procesamiento de datos
+                if submitted and uploaded_file is not None and center_name:
+                    with st.spinner("Procesando datos..."):
+                        center_data, message = process_uploaded_file(uploaded_file, center_name, center_type)
+                        
+                        if center_data:
+                            st.session_state.centers_data[center_name] = center_data
+                            st.session_state.current_center = center_name
+                            st.session_state.show_upload_form = False
+                            st.success(f"✅ {message}")
+                            st.success("🎉 ¡Datos cargados exitosamente! Visualizando métricas...")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ {message}")
+                
+                elif submitted:
+                    st.warning("⚠️ Por favor, completa todos los campos y sube un archivo")
     
     if st.session_state.current_center and st.session_state.current_center in st.session_state.centers_data:
         center_data = st.session_state.centers_data[st.session_state.current_center]
@@ -1379,33 +1520,6 @@ elif selected == "Dashboard":
             </div>
             """, unsafe_allow_html=True)
         
-        # Gráficas principales
-        st.subheader("📊 Análisis Detallado")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-            st.plotly_chart(
-                create_comparison_chart(latest_data, sector_avg),
-                use_container_width=True
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-            st.plotly_chart(
-                create_kpi_chart(
-                    center_data['monthly_data'],
-                    sector_avg['trafico_peatonal'],
-                    'trafico_peatonal',
-                    'Evolución del Tráfico Peatonal',
-                    'visitantes/día'
-                ),
-                use_container_width=True
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
-        
         # Análisis avanzado del mercado
         st.subheader("📊 Análisis Avanzado del Mercado")
         
@@ -1413,28 +1527,13 @@ elif selected == "Dashboard":
         market_charts = create_market_analysis_charts()
         
         if market_charts:
-            # Fila 1: Ventas y Ocupación por Zona
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                if 'ventas_zonas' in market_charts:
-                    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                    st.plotly_chart(market_charts['ventas_zonas'], use_container_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-            
-            with col2:
-                if 'ocupacion_zonas' in market_charts:
-                    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                    st.plotly_chart(market_charts['ocupacion_zonas'], use_container_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-            
-            # Fila 2: Análisis por Tipo de Negocio
+            # Análisis por Tipo de Negocio
             if 'business_comparison' in market_charts:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(market_charts['business_comparison'], use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
             
-            # Fila 3: Rankings y Eficiencia
+            # Rankings y Eficiencia
             col1, col2 = st.columns([1, 1])
             
             with col1:
@@ -1450,7 +1549,133 @@ elif selected == "Dashboard":
                     st.markdown('</div>', unsafe_allow_html=True)
     
     else:
-        st.info("📝 No hay datos cargados. Ve a 'Cargar Datos' para subir información de tu centro comercial.")
+        # Estado sin datos - Llamada a la acción más atractiva
+        st.markdown("---")
+        st.markdown("""
+        <div style="text-align: center; padding: 3rem 1rem;">
+            <h2 style="color: var(--text-color); margin-bottom: 1rem;">🏢 Bienvenido a Harmon BI</h2>
+            <p style="color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 2rem;">
+                Comienza a analizar el rendimiento de tu centro comercial
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Botón central de carga de datos
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("🚀 Cargar Mis Datos Ahora", type="primary", use_container_width=True, key="main_upload_btn"):
+                st.session_state.show_upload_form = True
+                st.rerun()
+        
+        # Información sobre qué se puede hacer
+        st.markdown("---")
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.markdown("""
+            <div class="kpi-card" style="text-align: center;">
+                <h3>📊 Análisis Completo</h3>
+                <p>Visualiza KPIs, tendencias y comparaciones con el mercado</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <div class="kpi-card" style="text-align: center;">
+                <h3>📈 Benchmarking</h3>
+                <p>Compara tu rendimiento con promedios del sector</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            st.markdown("""
+            <div class="kpi-card" style="text-align: center;">
+                <h3>🎯 Insights</h3>
+                <p>Obtén recomendaciones basadas en datos reales</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # Insights del mercado
+    st.subheader("💡 Insights del Mercado")
+    
+    # Obtener datos del mercado para los insights
+    sector_avg = get_sector_averages()
+    zone_data = get_market_data_by_zone()
+    business_data = get_market_data_by_business_type()
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**🔍 Análisis del Sector**")
+        st.info(f"💰 **Ventas Totales**: {sector_avg['ventas_totales']:,.0f}€ en total")
+        st.info(f"👥 **Visitantes**: {sector_avg['n_visitantes']:,.0f} visitantes totales")
+        st.info(f"🏢 **Ocupación**: {sector_avg['ocupacion_por_m2']:.2f} visitantes/m² promedio")
+        if zone_data is not None:
+            best_zone = zone_data.loc[zone_data['ingresos (€)'].idxmax()]
+            st.info(f"🗺️ **Mejor Zona**: {best_zone['zona_geografica']} con {best_zone['ingresos (€)']:,.0f}€")
+    
+    with col2:
+        st.markdown("**📊 Benchmarking**")
+        st.success(f"✅ **Ventas**: {sector_avg['ventas_totales']:,.0f}€ es el total del sector")
+        st.success(f"✅ **Visitantes**: {sector_avg['n_visitantes']:,.0f} es el total de visitantes")
+        st.success(f"✅ **Ocupación**: {sector_avg['ocupacion_por_m2']:.2f} visitantes/m² es el promedio")
+        if business_data is not None:
+            best_business = business_data.loc[business_data['ingresos (€)'].idxmax()]
+            st.success(f"✅ **Mejor Categoría**: {best_business['tipo_negocio']} con {best_business['ingresos (€)']:,.0f}€")
+    
+    # Información adicional del mercado
+    st.subheader("📋 Información Adicional del Mercado")
+    
+    with st.expander("🏢 Tipos de Centros Comerciales en el Mercado"):
+        st.write("""
+        **Centros Urbanos**: 
+        - Tráfico promedio: 3,000 visitantes/día
+        - Ventas promedio: 50€/m²/mes
+        - Ocupación promedio: 85%
+        
+        **Centros Suburbanos**:
+        - Tráfico promedio: 2,200 visitantes/día
+        - Ventas promedio: 42€/m²/mes
+        - Ocupación promedio: 75%
+        
+        **Centros Regionales**:
+        - Tráfico promedio: 2,800 visitantes/día
+        - Ventas promedio: 48€/m²/mes
+        - Ocupación promedio: 80%
+        """)
+    
+    with st.expander("📈 Factores que Afectan el Rendimiento"):
+        st.write("""
+        **Factores Positivos**:
+        - Ubicación estratégica
+        - Mix de tiendas diversificado
+        - Eventos y promociones regulares
+        - Servicios adicionales (cine, restaurantes)
+        
+        **Factores Negativos**:
+        - Competencia directa cercana
+        - Accesibilidad limitada
+        - Falta de renovación
+        - Estacionalidad marcada
+        """)
+    
+    with st.expander("🎯 Mejores Prácticas del Sector"):
+        st.write("""
+        **Marketing y Promoción**:
+        - Campañas digitales activas
+        - Eventos temáticos mensuales
+        - Programas de fidelización
+        
+        **Gestión Comercial**:
+        - Análisis regular de mix de tiendas
+        - Optimización de espacios
+        - Estrategias de pricing dinámicas
+        
+        **Experiencia del Cliente**:
+        - Layout intuitivo
+        - Servicios de conveniencia
+        - Tecnología integrada
+        """)
 
 # Página de Análisis vs Mercado
 elif selected == "Análisis vs Mercado":
@@ -1540,8 +1765,9 @@ elif selected == "Análisis vs Mercado":
                 theta=categories,
                 fill='toself',
                 name='Tu Centro',
-                line_color='#2563eb',
-                fillcolor='rgba(37, 99, 235, 0.3)'
+                line=dict(color='#2563eb', width=3),
+                marker=dict(size=8, color='#2563eb'),
+                fillcolor='rgba(37, 99, 235, 0.2)'
             ))
             
             fig.add_trace(go.Scatterpolar(
@@ -1549,22 +1775,49 @@ elif selected == "Análisis vs Mercado":
                 theta=categories,
                 fill='toself',
                 name='Promedio Mercado',
-                line_color='#64748b',
-                fillcolor='rgba(100, 116, 139, 0.2)'
+                line=dict(color='#64748b', width=2),
+                marker=dict(size=6, color='#64748b'),
+                fillcolor='rgba(100, 116, 139, 0.15)'
             ))
+            
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            
+            # Configurar colores de fondo
+            bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
             
             fig.update_layout(
                 polar=dict(
                     radialaxis=dict(
                         visible=True,
                         range=[0, 100],
-                        tickfont=dict(color='#212529')
-                    )),
+                        tickfont=dict(color=axis_text_color),
+                        gridcolor='rgba(0,0,0,0.1)' if not st.session_state.dark_mode else 'rgba(255,255,255,0.1)',
+                        linecolor=axis_text_color
+                    ),
+                    angularaxis=dict(
+                        tickfont=dict(color=axis_text_color, size=12),
+                        linecolor=axis_text_color,
+                        gridcolor='rgba(0,0,0,0.1)' if not st.session_state.dark_mode else 'rgba(255,255,255,0.1)'
+                    ),
+                    bgcolor=bg_color
+                ),
                 showlegend=True,
+                legend=dict(
+                    orientation="v",
+                    yanchor="top",
+                    y=0.95,
+                    xanchor="left",
+                    x=1.02,
+                    font=dict(color=axis_text_color, size=12)
+                ),
                 title=dict(text="Comparación de Rendimiento vs Mercado", 
-                          font=dict(size=16, color="#212529")),
-                template="plotly_white",
-                height=500
+                           font=dict(size=16, color=title_color)),
+                 template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                height=500,
+                plot_bgcolor=bg_color,
+                paper_bgcolor=bg_color,
+                font=dict(color=axis_text_color)
             )
             
             st.plotly_chart(fig, use_container_width=True)
@@ -1713,13 +1966,18 @@ elif selected == "Datos del Mercado":
             marker_color=CHART_COLORS,
             text=[f"{v:.1f}" for v in values],
             textposition='auto',
-            textfont=dict(color='#212529', size=12)
+            textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=12)
         )])
+        
+        title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+        axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
         
         fig.update_layout(
             title=dict(text="Promedios del Mercado por Métrica", 
-                      font=dict(size=16, color="#212529")),
-            template="plotly_white",
+                       font=dict(size=16, color=title_color)),
+             xaxis=dict(tickfont=dict(color=axis_text_color)),
+             yaxis=dict(tickfont=dict(color=axis_text_color)),
+             template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
             height=400,
             xaxis_tickangle=-45
         )
@@ -1745,17 +2003,20 @@ elif selected == "Datos del Mercado":
             fillcolor='rgba(100, 116, 139, 0.3)'
         ))
         
+        title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+        axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+        
         fig.update_layout(
             polar=dict(
                 radialaxis=dict(
                     visible=True,
                     range=[0, 100],
-                    tickfont=dict(color='#212529')
+                     tickfont=dict(color=axis_text_color)
                 )),
             showlegend=True,
             title=dict(text="Perfil del Mercado", 
-                      font=dict(size=16, color="#212529")),
-            template="plotly_white",
+                       font=dict(size=16, color=title_color)),
+             template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
             height=400
         )
         
@@ -1842,11 +2103,23 @@ elif selected == "Datos del Mercado":
             row=2, col=1
         )
         
+        # Configurar colores según el modo
+        title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+        axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+        bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+        
         fig.update_layout(
-            title="Tendencias del Mercado - Tráfico y Ventas",
-            template="plotly_white",
+            title=dict(text="Tendencias del Mercado - Tráfico y Ventas", font=dict(size=16, color=title_color)),
+            template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
             height=500,
-            showlegend=False
+            showlegend=False,
+            plot_bgcolor=bg_color,
+            paper_bgcolor=bg_color,
+            # Configurar colores de ejes para ambos subplots
+            xaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+            yaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+            xaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+            yaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color))
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -1873,11 +2146,23 @@ elif selected == "Datos del Mercado":
             row=2, col=1
         )
         
+        # Configurar colores según el modo
+        title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+        axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+        bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+        
         fig.update_layout(
-            title="Tendencias del Mercado - Ocupación y Conversión",
-            template="plotly_white",
+            title=dict(text="Tendencias del Mercado - Ocupación y Conversión", font=dict(size=16, color=title_color)),
+            template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
             height=500,
-            showlegend=False
+            showlegend=False,
+            plot_bgcolor=bg_color,
+            paper_bgcolor=bg_color,
+            # Configurar colores de ejes para ambos subplots
+            xaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+            yaxis=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+            xaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color)),
+            yaxis2=dict(tickfont=dict(color=axis_text_color), title_font=dict(color=axis_text_color))
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -1896,15 +2181,24 @@ elif selected == "Datos del Mercado":
                 marker_color=CHART_COLORS[:5],
                 text=[f"{v:,.0f}" for v in zone_data['ingresos (€)']],
                 textposition='auto',
-                textfont=dict(color='#212529', size=10)
+                textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=10)
             )])
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+            
             fig.update_layout(
-                title="Ventas Totales por Zona Geográfica",
+                title=dict(text="Ventas Totales por Zona Geográfica", font=dict(size=16, color=title_color)),
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Ventas Totales (€)",
-                template="plotly_white",
-                height=400
+                xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                height=400,
+                plot_bgcolor=bg_color,
+                paper_bgcolor=bg_color
             )
             
             st.plotly_chart(fig, use_container_width=True)
@@ -1917,15 +2211,24 @@ elif selected == "Datos del Mercado":
                 marker_color=CHART_COLORS[:5],
                 text=[f"{v:.2f}" for v in zone_data['ocupacion_por_m2']],
                 textposition='auto',
-                textfont=dict(color='#212529', size=10)
+                textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=10)
             )])
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+            
             fig.update_layout(
-                title="Ocupación por m² por Zona",
+                title=dict(text="Ocupación por m² por Zona", font=dict(size=16, color=title_color)),
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Ocupación por m² (visitantes/m²)",
-                template="plotly_white",
-                height=400
+                xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                height=400,
+                plot_bgcolor=bg_color,
+                paper_bgcolor=bg_color
             )
             
             st.plotly_chart(fig, use_container_width=True)
@@ -1961,15 +2264,24 @@ elif selected == "Datos del Mercado":
                 marker_color=CHART_COLORS[:3],
                 text=[f"{v:,.0f}" for v in business_data['ingresos (€)']],
                 textposition='auto',
-                textfont=dict(color='#212529', size=10)
+                textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=10)
             )])
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+            
             fig.update_layout(
-                title="Ventas Totales por Tipo de Negocio",
+                title=dict(text="Ventas Totales por Tipo de Negocio", font=dict(size=16, color=title_color)),
                 xaxis_title="Tipo de Negocio",
                 yaxis_title="Ventas Totales (€)",
-                template="plotly_white",
-                height=400
+                xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                height=400,
+                plot_bgcolor=bg_color,
+                paper_bgcolor=bg_color
             )
             
             st.plotly_chart(fig, use_container_width=True)
@@ -1982,15 +2294,24 @@ elif selected == "Datos del Mercado":
                 marker_color=CHART_COLORS[:3],
                 text=[f"{v:,.0f}" for v in business_data['afluencia']],
                 textposition='auto',
-                textfont=dict(color='#212529', size=10)
+                textfont=dict(color='#ffffff' if st.session_state.dark_mode else '#212529', size=10)
             )])
             
+            # Configurar colores según el modo
+            title_color = "#ffffff" if st.session_state.dark_mode else "#2c3e50"
+            axis_text_color = '#ffffff' if st.session_state.dark_mode else '#1f2937'
+            bg_color = '#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
+            
             fig.update_layout(
-                title="Visitantes por Tipo de Negocio",
+                title=dict(text="Visitantes por Tipo de Negocio", font=dict(size=16, color=title_color)),
                 xaxis_title="Tipo de Negocio",
                 yaxis_title="Total Visitantes",
-                template="plotly_white",
-                height=400
+                xaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                yaxis=dict(title_font=dict(color=axis_text_color), tickfont=dict(color=axis_text_color)),
+                template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
+                height=400,
+                plot_bgcolor=bg_color,
+                paper_bgcolor=bg_color
             )
             
             st.plotly_chart(fig, use_container_width=True)
