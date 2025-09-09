@@ -1514,7 +1514,7 @@ elif selected == "Análisis vs Mercado":
         st.subheader("📊 Comparación Detallada vs Mercado")
         
         col1, col2 = st.columns(2)
-        
+
         with col1:
             st.markdown('<div class="chart-container">', unsafe_allow_html=True)
             
@@ -1572,302 +1572,75 @@ elif selected == "Análisis vs Mercado":
         
         with col2:
             st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-            
-            # Gráfica de barras de comparación
-            metric_names = [m['metric'] for m in comparison_metrics]
-            center_vals = [m['center_value'] for m in comparison_metrics]
-            sector_vals = [m['sector_value'] for m in comparison_metrics]
-            performances = [m['performance'] for m in comparison_metrics]
-            
-            # Crear colores basados en el rendimiento
-            colors = ['#2563eb' if p > 0 else '#64748b' if p < -10 else '#3b82f6' for p in performances]
-            
-            fig = go.Figure()
-            
-            fig.add_trace(go.Bar(
-                name='Tu Centro',
-                x=metric_names,
-                y=center_vals,
-                marker_color=colors,
-                text=[f"{p:+.1f}%" for p in performances],
-                textposition='auto',
-                textfont=dict(color='#212529', size=10)
-            ))
-            
-            fig.add_trace(go.Bar(
-                name='Promedio Mercado',
-                x=metric_names,
-                y=sector_vals,
-                marker_color='rgba(0, 168, 204, 0.7)',
-                opacity=0.7
-            ))
-            
-            fig.update_layout(
-                title=dict(text="Comparación Directa vs Mercado", 
-                          font=dict(size=16, color="#212529")),
-                template="plotly_white",
-                height=500,
-                barmode='group',
-                xaxis_tickangle=-45,
-                hovermode='x unified',
-                showlegend=True
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
+            st.subheader("🎯 Posicionamiento en el Mercado")
+
+            # Calcular score general
+            total_performance = sum([abs(m['performance']) for m in comparison_metrics if m['performance'] > 0])
+            total_metrics = len([m for m in comparison_metrics if m['performance'] > 0])
+            market_score = (total_performance / total_metrics) if total_metrics > 0 else 0
+
+            # 2 filas de 2 columnas cada una
+            row1_col1, row1_col2 = st.columns(2)
+            row2_col1, row2_col2 = st.columns(2)
+
+            # Estilo tipo botón para métricas (más pequeño)
+            button_style = """
+            <style>
+            .metric-btn {
+                display: block;
+                background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+                color: #fff !important;
+                border-radius: 10px;
+                padding: 0.7em 0.3em;
+                margin: 0.3em 0;
+                text-align: center;
+                font-size: 1em;
+                font-weight: 500;
+                box-shadow: 0 1px 4px rgba(37,99,235,0.10);
+                border: none;
+                transition: background 0.2s, box-shadow 0.2s;
+                cursor: pointer;
+            }
+            .metric-btn span {
+                font-size: 1.2em;
+                font-weight: 600;
+            }
+            .metric-btn:hover {
+                background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+                box-shadow: 0 2px 8px rgba(37,99,235,0.18);
+            }
+            </style>
+            """
+            st.markdown(button_style, unsafe_allow_html=True)
+
+            with row1_col1:
+                st.markdown(
+                    f'<div class="metric-btn">Score vs Mercado<br><span>{market_score:.1f}%</span><br><span style="font-size:0.9em;">{"Superior" if market_score > 10 else "Promedio" if market_score > 0 else "Inferior"}</span></div>',
+                    unsafe_allow_html=True
+                )
+
+            with row1_col2:
+                superior_count = len([m for m in comparison_metrics if m['performance'] > 0])
+                st.markdown(
+                    f'<div class="metric-btn">Métricas Superiores<br><span>{superior_count}/6</span><br><span style="font-size:0.9em;">{superior_count/6*100:.0f}%</span></div>',
+                    unsafe_allow_html=True
+                )
+
+            with row2_col1:
+                avg_performance = sum([m['performance'] for m in comparison_metrics]) / len(comparison_metrics)
+                st.markdown(
+                    f'<div class="metric-btn">Rendimiento Promedio<br><span>{avg_performance:+.1f}%</span><br><span style="font-size:0.9em;">{"Excelente" if avg_performance > 10 else "Bueno" if avg_performance > 0 else "Mejorable"}</span></div>',
+                    unsafe_allow_html=True
+                )
+
+            with row2_col2:
+                best_metric = max(comparison_metrics, key=lambda x: x['performance'])
+                st.markdown(
+                    f'<div class="metric-btn">Mejor Métrica<br><span>{best_metric["metric"]}</span><br><span style="font-size:0.9em;">+{best_metric["performance"]:.1f}%</span></div>',
+                    unsafe_allow_html=True
+                )
+
             st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Análisis de posicionamiento en el mercado
-        st.subheader("🎯 Posicionamiento en el Mercado")
-        
-        # Calcular score general
-        total_performance = sum([abs(m['performance']) for m in comparison_metrics if m['performance'] > 0])
-        total_metrics = len([m for m in comparison_metrics if m['performance'] > 0])
-        market_score = (total_performance / total_metrics) if total_metrics > 0 else 0
-        
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            st.metric(
-                "Score vs Mercado",
-                f"{market_score:.1f}%",
-                f"{'Superior' if market_score > 10 else 'Promedio' if market_score > 0 else 'Inferior'}"
-            )
-        
-        with col2:
-            superior_count = len([m for m in comparison_metrics if m['performance'] > 0])
-            st.metric(
-                "Métricas Superiores",
-                f"{superior_count}/6",
-                f"{superior_count/6*100:.0f}%"
-            )
-        
-        with col3:
-            avg_performance = sum([m['performance'] for m in comparison_metrics]) / len(comparison_metrics)
-            st.metric(
-                "Rendimiento Promedio",
-                f"{avg_performance:+.1f}%",
-                f"{'Excelente' if avg_performance > 10 else 'Bueno' if avg_performance > 0 else 'Mejorable'}"
-            )
-        
-        with col4:
-            best_metric = max(comparison_metrics, key=lambda x: x['performance'])
-            st.metric(
-                "Mejor Métrica",
-                best_metric['metric'],
-                f"+{best_metric['performance']:.1f}%"
-            )
-        
-        # Recomendaciones estratégicas basadas en el mercado
-        st.subheader("💡 Recomendaciones Estratégicas vs Mercado")
-        
-        # Generar recomendaciones específicas
-        recommendations = []
-        
-        for metric in comparison_metrics:
-            if metric['performance'] < -10:  # Significativamente por debajo del mercado
-                if 'Tráfico' in metric['metric']:
-                    recommendations.append({
-                        'area': 'Marketing y Promoción',
-                        'metric': metric['metric'],
-                        'performance': metric['performance'],
-                        'recommendation': 'Implementar campañas de marketing digital y eventos especiales para aumentar el tráfico peatonal',
-                        'priority': 'Alta'
-                    })
-                elif 'Ventas' in metric['metric']:
-                    recommendations.append({
-                        'area': 'Estrategia Comercial',
-                        'metric': metric['metric'],
-                        'performance': metric['performance'],
-                        'recommendation': 'Revisar mix de tiendas y estrategias de pricing para mejorar ventas por m²',
-                        'priority': 'Alta'
-                    })
-                elif 'Ocupación' in metric['metric']:
-                    recommendations.append({
-                        'area': 'Gestión de Espacios',
-                        'metric': metric['metric'],
-                        'performance': metric['performance'],
-                        'recommendation': 'Desarrollar estrategias de atracción de nuevos inquilinos y retención',
-                        'priority': 'Alta'
-                    })
-                elif 'Conversión' in metric['metric']:
-                    recommendations.append({
-                        'area': 'Experiencia del Cliente',
-                        'metric': metric['metric'],
-                        'performance': metric['performance'],
-                        'recommendation': 'Mejorar la experiencia del cliente y optimizar el layout del centro',
-                        'priority': 'Media'
-                    })
-                elif 'Tiempo' in metric['metric']:
-                    recommendations.append({
-                        'area': 'Entretenimiento y Servicios',
-                        'metric': metric['metric'],
-                        'performance': metric['performance'],
-                        'recommendation': 'Añadir más opciones de entretenimiento y servicios para aumentar tiempo de permanencia',
-                        'priority': 'Media'
-                    })
-        
-        # Mostrar recomendaciones
-        if recommendations:
-            for i, rec in enumerate(recommendations, 1):
-                priority_color = "🔴" if rec['priority'] == 'Alta' else "🟡"
-                
-                with st.expander(f"{priority_color} {rec['area']} - {rec['metric']} ({rec['performance']:+.1f}%)"):
-                    st.write(f"**Recomendación:** {rec['recommendation']}")
-                    st.write(f"**Prioridad:** {rec['priority']}")
-                    st.write(f"**Impacto esperado:** Mejora del {abs(rec['performance']):.1f}% en {rec['metric']}")
-        else:
-            st.success("🎉 ¡Excelente! Tu centro está por encima del promedio del mercado en todas las métricas principales.")
-        
-        # Análisis de tendencias vs mercado
-        st.subheader("📈 Tendencias vs Mercado")
-        
-        if len(center_data['monthly_data']) >= 2:
-            latest = center_data['monthly_data'][-1]
-            previous = center_data['monthly_data'][-2]
-            
-            trends = {}
-            for metric in ['trafico_peatonal', 'ventas_por_m2', 'tasa_ocupacion', 
-                          'tiempo_permanencia', 'tasa_conversion', 'ingresos_totales']:
-                change = ((latest[metric] - previous[metric]) / previous[metric]) * 100
-                trends[metric] = change
-            
-            # Mostrar tendencias con contexto de mercado
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric(
-                    "Tráfico Peatonal",
-                    f"{latest['trafico_peatonal']:.0f}",
-                    f"{trends['trafico_peatonal']:+.1f}%",
-                    help=f"vs Mercado: {((latest['trafico_peatonal']/sector_avg['trafico_peatonal']-1)*100):+.1f}%"
-                )
-                st.metric(
-                    "Ventas por m²",
-                    f"{latest['ventas_por_m2']:.1f}",
-                    f"{trends['ventas_por_m2']:+.1f}%",
-                    help=f"vs Mercado: {((latest['ventas_por_m2']/sector_avg['ventas_por_m2']-1)*100):+.1f}%"
-                )
-            
-            with col2:
-                st.metric(
-                    "Tasa de Ocupación",
-                    f"{latest['tasa_ocupacion']:.1f}%",
-                    f"{trends['tasa_ocupacion']:+.1f}%",
-                    help=f"vs Mercado: {((latest['tasa_ocupacion']/sector_avg['tasa_ocupacion']-1)*100):+.1f}%"
-                )
-                st.metric(
-                    "Tiempo Permanencia",
-                    f"{latest['tiempo_permanencia']:.0f} min",
-                    f"{trends['tiempo_permanencia']:+.1f}%",
-                    help=f"vs Mercado: {((latest['tiempo_permanencia']/sector_avg['tiempo_permanencia']-1)*100):+.1f}%"
-                )
-            
-            with col3:
-                st.metric(
-                    "Tasa de Conversión",
-                    f"{latest['tasa_conversion']:.1f}%",
-                    f"{trends['tasa_conversion']:+.1f}%",
-                    help=f"vs Mercado: {((latest['tasa_conversion']/sector_avg['tasa_conversion']-1)*100):+.1f}%"
-                )
-                st.metric(
-                    "Ingresos Totales",
-                    f"{latest['ingresos_totales']:,.0f}€",
-                    f"{trends['ingresos_totales']:+.1f}%",
-                    help=f"vs Mercado: {((latest['ingresos_totales']/sector_avg['ingresos_totales']-1)*100):+.1f}%"
-                )
-        
-        # Insights y recomendaciones
-        st.subheader("💡 Insights y Recomendaciones")
-        
-        # Generar insights basados en los datos
-        insights = []
-        recommendations = []
-        
-        # Análisis de tráfico
-        if latest['trafico_peatonal'] > sector_avg['trafico_peatonal']:
-            insights.append("✅ Tu centro tiene un tráfico peatonal superior al promedio del sector")
-        else:
-            insights.append("⚠️ El tráfico peatonal está por debajo del promedio del sector")
-            recommendations.append("Considera estrategias de marketing para aumentar el tráfico")
-        
-        # Análisis de conversión
-        if latest['tasa_conversion'] > sector_avg['tasa_conversion']:
-            insights.append("✅ Excelente tasa de conversión, superior al promedio")
-        else:
-            insights.append("⚠️ La tasa de conversión está por debajo del promedio")
-            recommendations.append("Revisa la experiencia del cliente y la oferta comercial")
-        
-        # Análisis de ocupación
-        if latest['tasa_ocupacion'] > 80:
-            insights.append("✅ Alta tasa de ocupación, excelente gestión de espacios")
-        elif latest['tasa_ocupacion'] < 70:
-            insights.append("⚠️ Tasa de ocupación baja, hay oportunidades de mejora")
-            recommendations.append("Evalúa estrategias para atraer nuevos inquilinos")
-        
-        # Análisis de tiempo de permanencia
-        if latest['tiempo_permanencia'] > sector_avg['tiempo_permanencia']:
-            insights.append("✅ Los visitantes permanecen más tiempo que el promedio")
-        else:
-            insights.append("⚠️ Tiempo de permanencia por debajo del promedio")
-            recommendations.append("Mejora la experiencia del visitante y la oferta de entretenimiento")
-        
-        # Mostrar insights
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("**🔍 Insights Clave:**")
-            for insight in insights:
-                st.write(insight)
-        
-        with col2:
-            st.markdown("**📋 Recomendaciones:**")
-            if recommendations:
-                for rec in recommendations:
-                    st.write(f"• {rec}")
-            else:
-                st.write("🎉 ¡Excelente rendimiento! Mantén las estrategias actuales.")
-        
-        # Gráfica de rendimiento por trimestre
-        st.subheader("📊 Rendimiento por Trimestre")
-        
-        if len(center_data['monthly_data']) >= 3:
-            # Agrupar por trimestre
-            df_quarterly = pd.DataFrame(center_data['monthly_data'])
-            df_quarterly['fecha'] = pd.to_datetime(df_quarterly['fecha'])
-            df_quarterly['quarter'] = df_quarterly['fecha'].dt.to_period('Q')
-            
-            quarterly_avg = df_quarterly.groupby('quarter').agg({
-                'trafico_peatonal': 'mean',
-                'ventas_por_m2': 'mean',
-                'tasa_ocupacion': 'mean',
-                'tiempo_permanencia': 'mean',
-                'tasa_conversion': 'mean',
-                'ingresos_totales': 'sum'
-            }).reset_index()
-            
-            fig = go.Figure()
-            
-            fig.add_trace(go.Scatter(
-                x=quarterly_avg['quarter'].astype(str),
-                y=quarterly_avg['ingresos_totales'],
-                mode='lines+markers',
-                name='Ingresos Totales',
-                line=dict(color='#2563eb', width=3),
-                marker=dict(size=10)
-            ))
-            
-            fig.update_layout(
-                title="Evolución de Ingresos por Trimestre",
-                xaxis_title="Trimestre",
-                yaxis_title="Ingresos (€)",
-                template="plotly_white",
-                height=400
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
-    
-    else:
-        st.info("📝 No hay datos cargados. Ve a 'Cargar Datos' para subir información de tu centro comercial.")
 
 # Página de Datos del Mercado
 elif selected == "Datos del Mercado":
