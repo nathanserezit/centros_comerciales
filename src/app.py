@@ -1280,7 +1280,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     
     # Menú de navegación elegante sin iconos
-    nav_options = ["Dashboard", "Análisis vs Mercado", "Datos del Mercado", "Configuración"]
+    nav_options = ["Dashboard", "Análisis vs Mercado", "Configuración"]
     
     # Crear botones de navegación elegantes
     selected = st.session_state.selected_page
@@ -1595,6 +1595,88 @@ if selected == "Dashboard":
             </div>
             """, unsafe_allow_html=True)
 
+    # Insights del mercado
+    st.subheader("💡 Insights del Mercado")
+    
+    # Obtener datos del mercado para los insights
+    sector_avg = get_sector_averages()
+    zone_data = get_market_data_by_zone()
+    business_data = get_market_data_by_business_type()
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**🔍 Análisis del Sector**")
+        st.info(f"💰 **Ventas Totales**: {sector_avg['ventas_totales']:,.0f}€ en total")
+        st.info(f"👥 **Visitantes**: {sector_avg['n_visitantes']:,.0f} visitantes totales")
+        st.info(f"🏢 **Ocupación**: {sector_avg['ocupacion_por_m2']:.2f} visitantes/m² promedio")
+        if zone_data is not None:
+            best_zone = zone_data.loc[zone_data['ingresos (€)'].idxmax()]
+            st.info(f"🗺️ **Mejor Zona**: {best_zone['zona_geografica']} con {best_zone['ingresos (€)']:,.0f}€")
+    
+    with col2:
+        st.markdown("**📊 Benchmarking**")
+        st.success(f"✅ **Ventas**: {sector_avg['ventas_totales']:,.0f}€ es el total del sector")
+        st.success(f"✅ **Visitantes**: {sector_avg['n_visitantes']:,.0f} es el total de visitantes")
+        st.success(f"✅ **Ocupación**: {sector_avg['ocupacion_por_m2']:.2f} visitantes/m² es el promedio")
+        if business_data is not None:
+            best_business = business_data.loc[business_data['ingresos (€)'].idxmax()]
+            st.success(f"✅ **Mejor Categoría**: {best_business['tipo_negocio']} con {best_business['ingresos (€)']:,.0f}€")
+    
+    # Información adicional del mercado
+    st.subheader("📋 Información Adicional del Mercado")
+    
+    with st.expander("🏢 Tipos de Centros Comerciales en el Mercado"):
+        st.write("""
+        **Centros Urbanos**: 
+        - Tráfico promedio: 3,000 visitantes/día
+        - Ventas promedio: 50€/m²/mes
+        - Ocupación promedio: 85%
+        
+        **Centros Suburbanos**:
+        - Tráfico promedio: 2,200 visitantes/día
+        - Ventas promedio: 42€/m²/mes
+        - Ocupación promedio: 75%
+        
+        **Centros Regionales**:
+        - Tráfico promedio: 2,800 visitantes/día
+        - Ventas promedio: 48€/m²/mes
+        - Ocupación promedio: 80%
+        """)
+    
+    with st.expander("📈 Factores que Afectan el Rendimiento"):
+        st.write("""
+        **Factores Positivos**:
+        - Ubicación estratégica
+        - Mix de tiendas diversificado
+        - Eventos y promociones regulares
+        - Servicios adicionales (cine, restaurantes)
+        
+        **Factores Negativos**:
+        - Competencia directa cercana
+        - Accesibilidad limitada
+        - Falta de renovación
+        - Estacionalidad marcada
+        """)
+    
+    with st.expander("🎯 Mejores Prácticas del Sector"):
+        st.write("""
+        **Marketing y Promoción**:
+        - Campañas digitales activas
+        - Eventos temáticos mensuales
+        - Programas de fidelización
+        
+        **Gestión Comercial**:
+        - Análisis regular de mix de tiendas
+        - Optimización de espacios
+        - Estrategias de pricing dinámicas
+        
+        **Experiencia del Cliente**:
+        - Layout intuitivo
+        - Servicios de conveniencia
+        - Tecnología integrada
+        """)
+
 # Página de Análisis vs Mercado
 elif selected == "Análisis vs Mercado":
     st.title("🏢 Harmon BI Dashboard")
@@ -1900,8 +1982,10 @@ elif selected == "Análisis vs Mercado":
         # Análisis de tendencias vs mercado
         st.subheader("📈 Tendencias vs Mercado")
         
+        # Obtener datos más recientes
+        latest = center_data['monthly_data'][-1] if center_data['monthly_data'] else {}
+        
         if len(center_data['monthly_data']) >= 2:
-            latest = center_data['monthly_data'][-1]
             previous = center_data['monthly_data'][-2]
             
             trends = {}
@@ -1962,33 +2046,34 @@ elif selected == "Análisis vs Mercado":
         insights = []
         recommendations = []
         
-        # Análisis de tráfico
-        if latest['trafico_peatonal'] > sector_avg['trafico_peatonal']:
-            insights.append("✅ Tu centro tiene un tráfico peatonal superior al promedio del sector")
-        else:
-            insights.append("⚠️ El tráfico peatonal está por debajo del promedio del sector")
-            recommendations.append("Considera estrategias de marketing para aumentar el tráfico")
+        if latest and 'trafico_peatonal' in latest:
+            # Análisis de tráfico
+            if latest['trafico_peatonal'] > sector_avg['trafico_peatonal']:
+                insights.append("✅ Tu centro tiene un tráfico peatonal superior al promedio del sector")
+            else:
+                insights.append("⚠️ El tráfico peatonal está por debajo del promedio del sector")
+                recommendations.append("Considera estrategias de marketing para aumentar el tráfico")
         
-        # Análisis de conversión
-        if latest['tasa_conversion'] > sector_avg['tasa_conversion']:
-            insights.append("✅ Excelente tasa de conversión, superior al promedio")
-        else:
-            insights.append("⚠️ La tasa de conversión está por debajo del promedio")
-            recommendations.append("Revisa la experiencia del cliente y la oferta comercial")
-        
-        # Análisis de ocupación
-        if latest['tasa_ocupacion'] > 80:
-            insights.append("✅ Alta tasa de ocupación, excelente gestión de espacios")
-        elif latest['tasa_ocupacion'] < 70:
-            insights.append("⚠️ Tasa de ocupación baja, hay oportunidades de mejora")
-            recommendations.append("Evalúa estrategias para atraer nuevos inquilinos")
-        
-        # Análisis de tiempo de permanencia
-        if latest['tiempo_permanencia'] > sector_avg['tiempo_permanencia']:
-            insights.append("✅ Los visitantes permanecen más tiempo que el promedio")
-        else:
-            insights.append("⚠️ Tiempo de permanencia por debajo del promedio")
-            recommendations.append("Mejora la experiencia del visitante y la oferta de entretenimiento")
+            # Análisis de conversión
+            if latest['tasa_conversion'] > sector_avg['tasa_conversion']:
+                insights.append("✅ Excelente tasa de conversión, superior al promedio")
+            else:
+                insights.append("⚠️ La tasa de conversión está por debajo del promedio")
+                recommendations.append("Revisa la experiencia del cliente y la oferta comercial")
+            
+            # Análisis de ocupación
+            if latest['tasa_ocupacion'] > 80:
+                insights.append("✅ Alta tasa de ocupación, excelente gestión de espacios")
+            elif latest['tasa_ocupacion'] < 70:
+                insights.append("⚠️ Tasa de ocupación baja, hay oportunidades de mejora")
+                recommendations.append("Evalúa estrategias para atraer nuevos inquilinos")
+            
+            # Análisis de tiempo de permanencia
+            if latest['tiempo_permanencia'] > sector_avg['tiempo_permanencia']:
+                insights.append("✅ Los visitantes permanecen más tiempo que el promedio")
+            else:
+                insights.append("⚠️ Tiempo de permanencia por debajo del promedio")
+                recommendations.append("Mejora la experiencia del visitante y la oferta de entretenimiento")
         
         # Mostrar insights
         col1, col2 = st.columns(2)
