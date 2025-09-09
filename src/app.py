@@ -7,6 +7,29 @@ import numpy as np
 from datetime import datetime, timedelta
 import json
 import os
+
+# 🎨 Paleta de colores optimizada para compatibilidad cross-platform (Mac/Windows)
+# Estos colores tienen mejor contraste y se ven consistentes en diferentes sistemas
+COLORS = {
+    'primary': '#2E86AB',      # Azul profesional (mejor que #00d4aa)
+    'secondary': '#A23B72',    # Magenta oscuro (mejor que #00a8cc)
+    'success': '#F18F01',      # Naranja cálido (mejor que #ff6b6b)
+    'warning': '#C73E1D',      # Rojo intenso (mejor que #ffa726)
+    'info': '#7209B7',         # Púrpura (mejor que #66bb6a)
+    'accent': '#277DA1',       # Azul oscuro (mejor que #ab47bc)
+    'neutral': '#495057',      # Gris oscuro
+    'light': '#6C757D'         # Gris medio
+}
+
+# Paleta específica para gráficas (6 colores distintivos)
+CHART_COLORS = [
+    COLORS['primary'],    # Azul
+    COLORS['success'],    # Naranja
+    COLORS['secondary'],  # Magenta
+    COLORS['warning'],    # Rojo
+    COLORS['info'],       # Púrpura
+    COLORS['accent']      # Azul oscuro
+]
 import matplotlib.colors as mcolors
 from streamlit_option_menu import option_menu
 
@@ -18,100 +41,347 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS personalizado para el tema oscuro con colores Harmon
+# Forzar visibilidad del sidebar (especialmente útil en Mac)
+if 'sidebar_state' not in st.session_state:
+    st.session_state.sidebar_state = 'expanded'
+
+# 🖥️ Configuración para mejorar compatibilidad cross-platform
+def configure_plotly_theme():
+    """Configura tema consistente para gráficas en diferentes sistemas"""
+    return {
+        'layout': {
+            'font': {
+                'family': '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                'size': 12,
+                'color': '#2c3e50'
+            },
+            'plot_bgcolor': 'rgba(0,0,0,0)',
+            'paper_bgcolor': 'rgba(0,0,0,0)',
+            'colorway': CHART_COLORS,
+            'xaxis': {'gridcolor': '#e8e8e8', 'gridwidth': 1},
+            'yaxis': {'gridcolor': '#e8e8e8', 'gridwidth': 1}
+        }
+    }
+
+# Aplicar configuración global de Plotly
+import plotly.io as pio
+pio.templates.default = "plotly_white"
+
+# CSS personalizado mejorado para accesibilidad WCAG
 st.markdown("""
 <style>
+    /* Tema principal con buen contraste */
     .main {
-        background-color: #0a0a0a;
-        color: #ffffff;
+        background: #ffffff;
+        color: #212529;
     }
     
     .stApp {
-        background-color: #0a0a0a;
+        background: #ffffff;
+        color: #212529;
     }
     
-    .metric-card {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        padding: 1rem;
-        border-radius: 12px;
-        border: 1px solid #0f3460;
-        margin: 0.5rem 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* Asegurar contraste en texto principal */
+    .main .block-container {
+        color: #212529;
     }
     
+    /* KPI Cards con mejor contraste */
+    .kpi-card {
+        background: linear-gradient(135deg, #2E86AB 0%, #277DA1 100%);
+        color: #ffffff !important;
+        padding: 1.5rem;
+        border-radius: 16px;
+        border: 2px solid #1a5f7a;
+        text-align: center;
+        margin: 0.5rem;
+        box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3);
+        transition: transform 0.3s ease;
+    }
+    
+    .kpi-card h2, .kpi-card h3, .kpi-card p {
+        color: #ffffff !important;
+        margin: 0.25rem 0;
+    }
+    
+    .kpi-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(46, 134, 171, 0.4);
+    }
+    
+    /* Contenedores de gráficos con fondo claro */
+    .chart-container {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 16px;
+        border: 2px solid #dee2e6;
+        margin: 1rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Upload box mejorada */
     .upload-box {
-        border: 2px dashed #00d4aa;
+        border: 3px dashed #2E86AB;
         border-radius: 12px;
         padding: 2rem;
         text-align: center;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        background: #f8f9fa;
+        color: #212529;
         margin: 1rem 0;
         transition: all 0.3s ease;
     }
     
     .upload-box:hover {
-        border-color: #00ffcc;
-        background: linear-gradient(135deg, #1e1e3e 0%, #1a2a4e 100%);
+        border-color: #1a5f7a;
+        background: #e9ecef;
     }
     
-    .kpi-card {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 1px solid #0f3460;
-        text-align: center;
-        margin: 0.5rem;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-        transition: transform 0.3s ease;
-    }
-    
-    .kpi-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 212, 170, 0.2);
-    }
-    
-    .chart-container {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 1px solid #0f3460;
-        margin: 1rem 0;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-    }
-    
+    /* Botones con mejor contraste */
     .stButton > button {
-        background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
-        color: white;
-        border: none;
+        background: linear-gradient(135deg, #2E86AB 0%, #277DA1 100%);
+        color: #ffffff !important;
+        border: 2px solid #1a5f7a;
         border-radius: 8px;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.5rem;
         font-weight: 600;
+        font-size: 1rem;
         transition: all 0.3s ease;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #00ffcc 0%, #00c4e6 100%);
+        background: linear-gradient(135deg, #1a5f7a 0%, #2E86AB 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 212, 170, 0.3);
+        box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3);
     }
     
+    /* Inputs con mejor contraste */
     .stSelectbox > div > div {
-        background-color: #1a1a2e;
-        border: 1px solid #0f3460;
+        background-color: #ffffff;
+        border: 2px solid #ced4da;
         border-radius: 8px;
+        color: #212529;
     }
     
     .stTextInput > div > div > input {
-        background-color: #1a1a2e;
-        border: 1px solid #0f3460;
+        background-color: #ffffff;
+        border: 2px solid #ced4da;
         border-radius: 8px;
-        color: white;
+        color: #212529 !important;
     }
     
     .stFileUploader > div {
-        background-color: #1a1a2e;
-        border: 1px solid #0f3460;
+        background-color: #f8f9fa;
+        border: 2px solid #ced4da;
         border-radius: 8px;
+        color: #212529;
+    }
+    
+    /* Métricas de Streamlit */
+    .metric-container {
+        background: #ffffff;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    .metric-container label {
+        color: #6c757d !important;
+        font-weight: 600;
+    }
+    
+    .metric-container [data-testid="metric-container"] > div {
+        color: #212529 !important;
+    }
+    
+    /* Sidebar mejorada - CSS actualizado para compatibilidad cross-platform */
+    .stSidebar {
+        background-color: #343a40 !important;
+    }
+    
+    .stSidebar > div {
+        background-color: #343a40 !important;
+    }
+    
+    /* Asegurar visibilidad del sidebar en Mac y Windows */
+    section[data-testid="stSidebar"] {
+        background-color: #343a40 !important;
+        min-width: 244px !important;
+        max-width: 400px !important;
+    }
+    
+    section[data-testid="stSidebar"] > div {
+        background-color: #343a40 !important;
+        padding-top: 1rem !important;
+    }
+    
+    /* Mejorar contraste del contenido del sidebar */
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: #ffffff !important;
+    }
+    
+    section[data-testid="stSidebar"] h1, 
+    section[data-testid="stSidebar"] h2, 
+    section[data-testid="stSidebar"] h3 {
+        color: #ffffff !important;
+    }
+    
+    /* CSS específico para option_menu en sidebar */
+    section[data-testid="stSidebar"] .nav-link {
+        color: #ffffff !important;
+        background-color: transparent !important;
+        border-radius: 6px !important;
+        margin: 2px 0 !important;
+        padding: 0.75rem 1rem !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    section[data-testid="stSidebar"] .nav-link:hover {
+        background-color: #2E86AB !important;
+        color: #ffffff !important;
+    }
+    
+    section[data-testid="stSidebar"] .nav-link-selected {
+        background-color: #2E86AB !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 4px rgba(46, 134, 171, 0.3) !important;
+    }
+    
+    /* Forzar visibilidad del sidebar en Safari/Mac */
+    @media screen and (-webkit-min-device-pixel-ratio: 1) {
+        section[data-testid="stSidebar"] {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999 !important;
+        }
+    }
+    
+    /* Asegurar que el botón del sidebar sea visible */
+    button[data-testid="stSidebarNav"] {
+        background-color: #2E86AB !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+    }
+    
+    /* Mejorar visibilidad en diferentes resoluciones y sistemas */
+    @media (max-width: 768px) {
+        section[data-testid="stSidebar"] {
+            min-width: 280px !important;
+        }
+    }
+    
+    /* CSS específico para navegadores webkit (Safari/Mac) */
+    @supports (-webkit-appearance: none) {
+        section[data-testid="stSidebar"] {
+            background-color: #343a40 !important;
+            border-right: 2px solid #495057 !important;
+        }
+        
+        section[data-testid="stSidebar"] > div:first-child {
+            background-color: #343a40 !important;
+        }
+    }
+</style>
+
+<script>
+// JavaScript para forzar la visibilidad del sidebar en Mac
+document.addEventListener('DOMContentLoaded', function() {
+    function ensureSidebarVisibility() {
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        if (sidebar) {
+            sidebar.style.display = 'block';
+            sidebar.style.visibility = 'visible';
+            sidebar.style.opacity = '1';
+            sidebar.style.zIndex = '999';
+            
+            // Para navegadores webkit (Safari/Mac)
+            if (window.navigator.userAgent.includes('Safari') && !window.navigator.userAgent.includes('Chrome')) {
+                sidebar.style.backgroundColor = '#343a40';
+                sidebar.style.borderRight = '2px solid #495057';
+            }
+        }
+        
+        // Verificar si el menú de opciones es visible
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.style.color = 'white';
+            link.style.visibility = 'visible';
+        });
+    }
+    
+    // Ejecutar inmediatamente
+    ensureSidebarVisibility();
+    
+    // Ejecutar después de un pequeño delay para asegurar que el DOM esté listo
+    setTimeout(ensureSidebarVisibility, 100);
+    setTimeout(ensureSidebarVisibility, 500);
+    setTimeout(ensureSidebarVisibility, 1000);
+    
+    // Observador para cambios en el DOM
+    const observer = new MutationObserver(ensureSidebarVisibility);
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+
+""", unsafe_allow_html=True)
+
+# CSS adicional para títulos y headers
+st.markdown("""
+<style>
+    /* Títulos y headers */
+    h1, h2, h3, h4, h5, h6 {
+        color: #212529 !important;
+    }
+    
+    /* Texto general */
+    p, span, div {
+        color: #212529;
+    }
+    
+    /* Expandir elementos */
+    .streamlit-expanderHeader {
+        background-color: #f8f9fa;
+        color: #212529 !important;
+        border: 1px solid #dee2e6;
+    }
+    
+    .streamlit-expanderContent {
+        background-color: #ffffff;
+        color: #212529;
+        border: 1px solid #dee2e6;
+    }
+    
+    /* Dataframes */
+    .dataframe {
+        color: #212529 !important;
+        background-color: #ffffff;
+    }
+    
+    /* Info boxes */
+    .stInfo {
+        background-color: #d1ecf1;
+        color: #0c5460 !important;
+        border: 1px solid #bee5eb;
+    }
+    
+    .stSuccess {
+        background-color: #d4edda;
+        color: #155724 !important;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .stWarning {
+        background-color: #fff3cd;
+        color: #856404 !important;
+        border: 1px solid #ffeaa7;
+    }
+    
+    .stError {
+        background-color: #f8d7da;
+        color: #721c24 !important;
+        border: 1px solid #f5c6cb;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -157,8 +427,7 @@ def load_market_data():
     try:
         # Cargar datos agregados del mercado
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_agregados_mercado.csv')
+        csv_path = os.path.join(current_dir, 'data', 'datos_agregados_mercado.csv')
         df = pd.read_csv(csv_path)
         
         # Convertir fecha a datetime
@@ -204,8 +473,7 @@ def get_market_data_by_zone():
     """Obtiene datos del mercado agrupados por zona geográfica"""
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_agregados_mercado.csv')
+        csv_path = os.path.join(current_dir, 'data', 'datos_agregados_mercado.csv')
         df = pd.read_csv(csv_path)
         df['fecha'] = pd.to_datetime(df['fecha'])
         
@@ -236,8 +504,7 @@ def get_market_data_by_business_type():
     """Obtiene datos del mercado agrupados por tipo de negocio"""
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_agregados_mercado.csv')
+        csv_path = os.path.join(current_dir, 'data', 'datos_agregados_mercado.csv')
         df = pd.read_csv(csv_path)
         df['fecha'] = pd.to_datetime(df['fecha'])
         
@@ -268,8 +535,7 @@ def load_individual_center_data():
     """Carga los datos individuales de un centro comercial"""
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_individuales_centros.csv')
+        csv_path = os.path.join(current_dir, 'data', 'datos_individuales_centros.csv')
         df = pd.read_csv(csv_path)
         df['fecha'] = pd.to_datetime(df['fecha'])
         
@@ -378,8 +644,8 @@ def create_kpi_chart(data, sector_avg, metric_name, title, unit):
         y=values,
         mode='lines+markers',
         name='Tu Centro',
-        line=dict(color='#00d4aa', width=3),
-        marker=dict(size=8, color='#00d4aa'),
+        line=dict(color=COLORS['primary'], width=3),
+        marker=dict(size=8, color=COLORS['primary']),
         fill='tonexty',
         fillcolor='rgba(0, 212, 170, 0.1)'
     ))
@@ -408,10 +674,10 @@ def create_kpi_chart(data, sector_avg, metric_name, title, unit):
         )
     
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="white")),
+        title=dict(text=title, font=dict(size=16, color="#212529")),
         xaxis_title="Fecha",
         yaxis_title=f"{title} ({unit})",
-        template="plotly_dark",
+        template="plotly_white",
         height=350,
         margin=dict(l=0, r=0, t=60, b=0),
         hovermode='x unified',
@@ -447,7 +713,7 @@ def create_comparison_chart(center_data, sector_avg):
     fig = go.Figure()
     
     # Crear colores basados en el rendimiento
-    colors = ['#00d4aa' if p > 0 else '#ff4757' for p in performance]
+    colors = [COLORS['success'] if p > 0 else COLORS['warning'] for p in performance]
     
     fig.add_trace(go.Bar(
         name='Tu Centro',
@@ -456,7 +722,7 @@ def create_comparison_chart(center_data, sector_avg):
         marker_color=colors,
         text=[f"{p:+.1f}%" for p in performance],
         textposition='auto',
-        textfont=dict(color='white', size=10)
+        textfont=dict(color='#212529', size=10)
     ))
     
     fig.add_trace(go.Bar(
@@ -469,8 +735,8 @@ def create_comparison_chart(center_data, sector_avg):
     
     fig.update_layout(
         title=dict(text="Comparación vs. Promedio del Sector", 
-                  font=dict(size=16, color="white")),
-        template="plotly_dark",
+                  font=dict(size=16, color="#212529")),
+        template="plotly_white",
         height=450,
         barmode='group',
         xaxis_tickangle=-45,
@@ -484,7 +750,7 @@ def create_comparison_chart(center_data, sector_avg):
 def create_category_performance_chart():
     categories = ['Moda', 'Alimentación', 'Electrónica', 'Hogar', 'Deportes', 'Otros']
     values = [35, 25, 15, 12, 8, 5]
-    colors = ['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a', '#ab47bc']
+    colors = CHART_COLORS
     
     fig = go.Figure(data=[go.Pie(
         labels=categories,
@@ -492,13 +758,13 @@ def create_category_performance_chart():
         hole=0.4,
         marker_colors=colors,
         textinfo='label+percent',
-        textfont=dict(size=12, color='white')
+        textfont=dict(size=12, color='#212529')
     )])
     
     fig.update_layout(
         title=dict(text="Distribución por Categorías", 
-                  font=dict(size=16, color="white")),
-        template="plotly_dark",
+                  font=dict(size=16, color="#212529")),
+        template="plotly_white",
         height=400,
         showlegend=True,
         legend=dict(
@@ -530,16 +796,16 @@ def create_market_analysis_charts():
                 x=zone_data['zona_geografica'],
                 y=zone_data['ingresos (€)'],
                 name='Ventas por Zona',
-                marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a', '#ab47bc'],
+                marker_color=CHART_COLORS,
                 text=[f"{v:,.0f}€" for v in zone_data['ingresos (€)']],
                 textposition='auto',
-                textfont=dict(color='white', size=12)
+                textfont=dict(color='#212529', size=12)
             ))
             fig_zones.update_layout(
                 title="💰 Ventas Totales por Zona Geográfica",
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Ventas Totales (€)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             charts['ventas_zonas'] = fig_zones
@@ -551,16 +817,16 @@ def create_market_analysis_charts():
                 x=zone_data['zona_geografica'],
                 y=zone_data['ocupacion_por_m2'],
                 name='Ocupación por m²',
-                marker_color=['#66bb6a', '#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#ab47bc'],
+                marker_color=CHART_COLORS,
                 text=[f"{v:.1f}%" for v in zone_data['ocupacion_por_m2']],
                 textposition='auto',
-                textfont=dict(color='white', size=12)
+                textfont=dict(color='#212529', size=12)
             ))
             fig_ocupacion.update_layout(
                 title="🏢 Tasa de Ocupación por Zona Geográfica",
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Tasa de Ocupación (%)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             charts['ocupacion_zonas'] = fig_ocupacion
@@ -601,7 +867,7 @@ def create_market_analysis_charts():
             
             fig_business.update_layout(
                 title="🎯 Análisis por Tipo de Negocio",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400,
                 showlegend=False
             )
@@ -647,7 +913,7 @@ def create_market_analysis_charts():
             
             fig_ranking.update_layout(
                 title="📊 Rankings de Rendimiento",
-                template="plotly_dark",
+                template="plotly_white",
                 height=600,
                 showlegend=False
             )
@@ -685,7 +951,7 @@ def create_market_analysis_charts():
                 title="⚡ Eficiencia: Ventas vs Visitantes (tamaño = ocupación)",
                 xaxis_title="Visitantes",
                 yaxis_title="Ventas (€)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=500
             )
             charts['efficiency'] = fig_efficiency
@@ -698,24 +964,82 @@ def create_market_analysis_charts():
 
 # Navegación principal
 with st.sidebar:
+    st.markdown("### 🏢 Harmon BI Dashboard")
+    st.markdown("---")
+    
     selected = option_menu(
-        menu_title="Harmon BI",
+        menu_title="Navegación",
         options=["Cargar Datos", "Dashboard", "Análisis vs Mercado", "Datos del Mercado", "Configuración"],
         icons=["upload", "speedometer2", "graph-up", "database", "gear"],
         menu_icon="building",
         default_index=1,
+        orientation="vertical",
         styles={
-            "container": {"padding": "0!important", "background-color": "#262730"},
-            "icon": {"color": "white", "font-size": "20px"},
-            "nav-link": {
-                "font-size": "16px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#20b2aa",
+            "container": {
+                "padding": "0!important", 
+                "background-color": "#262730",
+                "border-radius": "8px",
+                "margin": "0.5rem 0"
             },
-            "nav-link-selected": {"background-color": "#20b2aa"},
+            "icon": {
+                "color": "white", 
+                "font-size": "18px",
+                "margin-right": "0.75rem"
+            },
+            "nav-link": {
+                "font-size": "15px",
+                "text-align": "left",
+                "margin": "3px 0",
+                "padding": "0.75rem 1rem",
+                "border-radius": "6px",
+                "color": "white",
+                "background-color": "transparent",
+                "--hover-color": "#2E86AB",
+                "transition": "all 0.3s ease",
+                "white-space": "nowrap"
+            },
+            "nav-link-selected": {
+                "background-color": "#2E86AB",
+                "color": "white",
+                "font-weight": "600",
+                "box-shadow": "0 2px 4px rgba(46, 134, 171, 0.3)"
+            },
         }
     )
+    
+    # Información adicional en el sidebar
+    st.markdown("---")
+    st.markdown("**📊 Centro Actual:**")
+    if st.session_state.current_center:
+        st.success(f"✅ {st.session_state.current_center}")
+    else:
+        st.info("No hay centro cargado")
+    
+    st.markdown("**📈 Estado:**")
+    st.info(f"📁 Centros: {len(st.session_state.centers_data)}")
+
+# Navegación alternativa horizontal (fallback para problemas de sidebar)
+if not selected:
+    st.markdown("### 🏢 Harmon BI Dashboard - Navegación")
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        if st.button("📤 Cargar Datos", key="nav1"):
+            selected = "Cargar Datos"
+    with col2:
+        if st.button("📊 Dashboard", key="nav2"):
+            selected = "Dashboard"
+    with col3:
+        if st.button("📈 Análisis vs Mercado", key="nav3"):
+            selected = "Análisis vs Mercado"
+    with col4:
+        if st.button("🗄️ Datos del Mercado", key="nav4"):
+            selected = "Datos del Mercado"
+    with col5:
+        if st.button("⚙️ Configuración", key="nav5"):
+            selected = "Configuración"
+    
+    if not selected:
+        selected = "Dashboard"  # Default
 
 # Página de Cargar Datos
 if selected == "Cargar Datos":
@@ -807,7 +1131,7 @@ elif selected == "Dashboard":
                 <p>€ del mercado</p>
             </div>
             """, unsafe_allow_html=True)
-        
+            
         with col2:
             st.markdown(f"""
             <div class="kpi-card">
@@ -825,13 +1149,13 @@ elif selected == "Dashboard":
                 <p>€ promedio/centro</p>
             </div>
             """, unsafe_allow_html=True)
-        
+            
         with col4:
             if zone_data is not None:
                 best_zone = zone_data.loc[zone_data['ingresos (€)'].idxmax()]
                 performance = ((best_zone['ingresos (€)'] / zone_data['ingresos (€)'].mean() - 1) * 100)
-                st.markdown(f"""
-                <div class="kpi-card">
+            st.markdown(f"""
+            <div class="kpi-card">
                     <h3>🏆 Top Zona</h3>
                     <h2>{best_zone['zona_geografica']}</h2>
                     <p>+{performance:.1f}% vs promedio</p>
@@ -868,13 +1192,13 @@ elif selected == "Dashboard":
                 <p>conversión promedio</p>
             </div>
             """, unsafe_allow_html=True)
-        
+            
         with col4:
             if business_data is not None:
                 best_business = business_data.loc[business_data['ingresos (€)'].idxmax()]
                 performance = ((best_business['ingresos (€)'] / business_data['ingresos (€)'].mean() - 1) * 100)
-                st.markdown(f"""
-                <div class="kpi-card">
+            st.markdown(f"""
+            <div class="kpi-card">
                     <h3>🎯 Top Categoría</h3>
                     <h2>{best_business['tipo_negocio']}</h2>
                     <p>+{performance:.1f}% vs promedio</p>
@@ -902,8 +1226,8 @@ elif selected == "Dashboard":
                     <h3>📍 Diversificación</h3>
                     <h2>{len(zone_data)} x {len(business_data)}</h2>
                     <p>zonas x categorías</p>
-                </div>
-                """, unsafe_allow_html=True)
+            </div>
+            """, unsafe_allow_html=True)
         
         # Gráficas principales
         st.subheader("📊 Análisis Detallado")
@@ -1084,12 +1408,12 @@ elif selected == "Análisis vs Mercado":
                     radialaxis=dict(
                         visible=True,
                         range=[0, 100],
-                        tickfont=dict(color='white')
+                        tickfont=dict(color='#212529')
                     )),
                 showlegend=True,
                 title=dict(text="Comparación de Rendimiento vs Mercado", 
-                          font=dict(size=16, color="white")),
-                template="plotly_dark",
+                          font=dict(size=16, color="#212529")),
+                template="plotly_white",
                 height=500
             )
             
@@ -1117,7 +1441,7 @@ elif selected == "Análisis vs Mercado":
                 marker_color=colors,
                 text=[f"{p:+.1f}%" for p in performances],
                 textposition='auto',
-                textfont=dict(color='white', size=10)
+                textfont=dict(color='#212529', size=10)
             ))
             
             fig.add_trace(go.Bar(
@@ -1130,8 +1454,8 @@ elif selected == "Análisis vs Mercado":
             
             fig.update_layout(
                 title=dict(text="Comparación Directa vs Mercado", 
-                          font=dict(size=16, color="white")),
-                template="plotly_dark",
+                          font=dict(size=16, color="#212529")),
+                template="plotly_white",
                 height=500,
                 barmode='group',
                 xaxis_tickangle=-45,
@@ -1302,56 +1626,56 @@ elif selected == "Análisis vs Mercado":
                     help=f"vs Mercado: {((latest['ingresos_totales']/sector_avg['ingresos_totales']-1)*100):+.1f}%"
                 )
         
-            # Insights y recomendaciones
-            st.subheader("💡 Insights y Recomendaciones")
-            
-            # Generar insights basados en los datos
-            insights = []
-            recommendations = []
-            
-            # Análisis de tráfico
-            if latest['trafico_peatonal'] > sector_avg['trafico_peatonal']:
-                insights.append("✅ Tu centro tiene un tráfico peatonal superior al promedio del sector")
+        # Insights y recomendaciones
+        st.subheader("💡 Insights y Recomendaciones")
+        
+        # Generar insights basados en los datos
+        insights = []
+        recommendations = []
+        
+        # Análisis de tráfico
+        if latest['trafico_peatonal'] > sector_avg['trafico_peatonal']:
+            insights.append("✅ Tu centro tiene un tráfico peatonal superior al promedio del sector")
+        else:
+            insights.append("⚠️ El tráfico peatonal está por debajo del promedio del sector")
+            recommendations.append("Considera estrategias de marketing para aumentar el tráfico")
+        
+        # Análisis de conversión
+        if latest['tasa_conversion'] > sector_avg['tasa_conversion']:
+            insights.append("✅ Excelente tasa de conversión, superior al promedio")
+        else:
+            insights.append("⚠️ La tasa de conversión está por debajo del promedio")
+            recommendations.append("Revisa la experiencia del cliente y la oferta comercial")
+        
+        # Análisis de ocupación
+        if latest['tasa_ocupacion'] > 80:
+            insights.append("✅ Alta tasa de ocupación, excelente gestión de espacios")
+        elif latest['tasa_ocupacion'] < 70:
+            insights.append("⚠️ Tasa de ocupación baja, hay oportunidades de mejora")
+            recommendations.append("Evalúa estrategias para atraer nuevos inquilinos")
+        
+        # Análisis de tiempo de permanencia
+        if latest['tiempo_permanencia'] > sector_avg['tiempo_permanencia']:
+            insights.append("✅ Los visitantes permanecen más tiempo que el promedio")
+        else:
+            insights.append("⚠️ Tiempo de permanencia por debajo del promedio")
+            recommendations.append("Mejora la experiencia del visitante y la oferta de entretenimiento")
+        
+        # Mostrar insights
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("**🔍 Insights Clave:**")
+            for insight in insights:
+                st.write(insight)
+        
+        with col2:
+            st.markdown("**📋 Recomendaciones:**")
+            if recommendations:
+                for rec in recommendations:
+                    st.write(f"• {rec}")
             else:
-                insights.append("⚠️ El tráfico peatonal está por debajo del promedio del sector")
-                recommendations.append("Considera estrategias de marketing para aumentar el tráfico")
-            
-            # Análisis de conversión
-            if latest['tasa_conversion'] > sector_avg['tasa_conversion']:
-                insights.append("✅ Excelente tasa de conversión, superior al promedio")
-            else:
-                insights.append("⚠️ La tasa de conversión está por debajo del promedio")
-                recommendations.append("Revisa la experiencia del cliente y la oferta comercial")
-            
-            # Análisis de ocupación
-            if latest['tasa_ocupacion'] > 80:
-                insights.append("✅ Alta tasa de ocupación, excelente gestión de espacios")
-            elif latest['tasa_ocupacion'] < 70:
-                insights.append("⚠️ Tasa de ocupación baja, hay oportunidades de mejora")
-                recommendations.append("Evalúa estrategias para atraer nuevos inquilinos")
-            
-            # Análisis de tiempo de permanencia
-            if latest['tiempo_permanencia'] > sector_avg['tiempo_permanencia']:
-                insights.append("✅ Los visitantes permanecen más tiempo que el promedio")
-            else:
-                insights.append("⚠️ Tiempo de permanencia por debajo del promedio")
-                recommendations.append("Mejora la experiencia del visitante y la oferta de entretenimiento")
-            
-            # Mostrar insights
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.markdown("**🔍 Insights Clave:**")
-                for insight in insights:
-                    st.write(insight)
-            
-            with col2:
-                st.markdown("**📋 Recomendaciones:**")
-                if recommendations:
-                    for rec in recommendations:
-                        st.write(f"• {rec}")
-                else:
-                    st.write("🎉 ¡Excelente rendimiento! Mantén las estrategias actuales.")
+                st.write("🎉 ¡Excelente rendimiento! Mantén las estrategias actuales.")
         
         # Gráfica de rendimiento por trimestre
         st.subheader("📊 Rendimiento por Trimestre")
@@ -1386,7 +1710,7 @@ elif selected == "Análisis vs Mercado":
                 title="Evolución de Ingresos por Trimestre",
                 xaxis_title="Trimestre",
                 yaxis_title="Ingresos (€)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             
@@ -1466,13 +1790,13 @@ elif selected == "Datos del Mercado":
             marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a', '#ab47bc'],
             text=[f"{v:.1f}" for v in values],
             textposition='auto',
-            textfont=dict(color='white', size=12)
+            textfont=dict(color='#212529', size=12)
         )])
         
         fig.update_layout(
             title=dict(text="Promedios del Mercado por Métrica", 
-                      font=dict(size=16, color="white")),
-            template="plotly_dark",
+                      font=dict(size=16, color="#212529")),
+            template="plotly_white",
             height=400,
             xaxis_tickangle=-45
         )
@@ -1503,12 +1827,12 @@ elif selected == "Datos del Mercado":
                 radialaxis=dict(
                     visible=True,
                     range=[0, 100],
-                    tickfont=dict(color='white')
+                    tickfont=dict(color='#212529')
                 )),
             showlegend=True,
             title=dict(text="Perfil del Mercado", 
-                      font=dict(size=16, color="white")),
-            template="plotly_dark",
+                      font=dict(size=16, color="#212529")),
+            template="plotly_white",
             height=400
         )
         
@@ -1597,7 +1921,7 @@ elif selected == "Datos del Mercado":
         
         fig.update_layout(
             title="Tendencias del Mercado - Tráfico y Ventas",
-            template="plotly_dark",
+            template="plotly_white",
             height=500,
             showlegend=False
         )
@@ -1628,7 +1952,7 @@ elif selected == "Datos del Mercado":
         
         fig.update_layout(
             title="Tendencias del Mercado - Ocupación y Conversión",
-            template="plotly_dark",
+            template="plotly_white",
             height=500,
             showlegend=False
         )
@@ -1649,14 +1973,14 @@ elif selected == "Datos del Mercado":
                 marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a'],
                 text=[f"{v:,.0f}" for v in zone_data['ingresos (€)']],
                 textposition='auto',
-                textfont=dict(color='white', size=10)
+                textfont=dict(color='#212529', size=10)
             )])
             
             fig.update_layout(
                 title="Ventas Totales por Zona Geográfica",
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Ventas Totales (€)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             
@@ -1670,14 +1994,14 @@ elif selected == "Datos del Mercado":
                 marker_color=['#00d4aa', '#00a8cc', '#ff6b6b', '#ffa726', '#66bb6a'],
                 text=[f"{v:.2f}" for v in zone_data['ocupacion_por_m2']],
                 textposition='auto',
-                textfont=dict(color='white', size=10)
+                textfont=dict(color='#212529', size=10)
             )])
             
             fig.update_layout(
                 title="Ocupación por m² por Zona",
                 xaxis_title="Zona Geográfica",
                 yaxis_title="Ocupación por m² (visitantes/m²)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             
@@ -1714,14 +2038,14 @@ elif selected == "Datos del Mercado":
                 marker_color=['#00d4aa', '#00a8cc', '#ff6b6b'],
                 text=[f"{v:,.0f}" for v in business_data['ingresos (€)']],
                 textposition='auto',
-                textfont=dict(color='white', size=10)
+                textfont=dict(color='#212529', size=10)
             )])
             
             fig.update_layout(
                 title="Ventas Totales por Tipo de Negocio",
                 xaxis_title="Tipo de Negocio",
                 yaxis_title="Ventas Totales (€)",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             
@@ -1735,14 +2059,14 @@ elif selected == "Datos del Mercado":
                 marker_color=['#00d4aa', '#00a8cc', '#ff6b6b'],
                 text=[f"{v:,.0f}" for v in business_data['afluencia']],
                 textposition='auto',
-                textfont=dict(color='white', size=10)
+                textfont=dict(color='#212529', size=10)
             )])
             
             fig.update_layout(
                 title="Visitantes por Tipo de Negocio",
                 xaxis_title="Tipo de Negocio",
                 yaxis_title="Total Visitantes",
-                template="plotly_dark",
+                template="plotly_white",
                 height=400
             )
             
@@ -1764,7 +2088,7 @@ elif selected == "Datos del Mercado":
                                         'Tamaño Total (m²)', 'Total Empleados', 'Ocupación por m²']
         
         st.dataframe(display_business_data, use_container_width=True)
-
+    
     # Insights del mercado
     st.subheader("💡 Insights del Mercado")
     
