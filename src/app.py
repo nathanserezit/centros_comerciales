@@ -158,7 +158,7 @@ def load_market_data():
         # Cargar datos agregados del mercado
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_agregados_mercado.csv')
+        csv_path = os.path.join(project_root, 'src', 'data', 'datos_agregados_mercado.csv')
         df = pd.read_csv(csv_path)
         
         # Convertir fecha a datetime
@@ -205,7 +205,7 @@ def get_market_data_by_zone():
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_agregados_mercado.csv')
+        csv_path = os.path.join(project_root, 'src', 'data', 'datos_agregados_mercado.csv')
         df = pd.read_csv(csv_path)
         df['fecha'] = pd.to_datetime(df['fecha'])
         
@@ -237,7 +237,7 @@ def get_market_data_by_business_type():
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_agregados_mercado.csv')
+        csv_path = os.path.join(project_root, 'src', 'data', 'datos_agregados_mercado.csv')
         df = pd.read_csv(csv_path)
         df['fecha'] = pd.to_datetime(df['fecha'])
         
@@ -269,7 +269,7 @@ def load_individual_center_data():
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(current_dir)
-        csv_path = os.path.join(project_root, 'datos', 'datos_individuales_centros.csv')
+        csv_path = os.path.join(project_root, 'src', 'data', 'datos_individuales_centros.csv')
         df = pd.read_csv(csv_path)
         df['fecha'] = pd.to_datetime(df['fecha'])
         
