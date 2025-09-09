@@ -46,247 +46,56 @@ if 'sidebar_state' not in st.session_state:
     st.session_state.sidebar_state = 'expanded'
 
 # 🖥️ Configuración para mejorar compatibilidad cross-platform
-def configure_plotly_theme():
-    """Configura tema consistente para gráficas en diferentes sistemas"""
-    return {
-        'layout': {
-            'font': {
-                'family': '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
-                'size': 12,
-                'color': '#2c3e50'
-            },
-            'plot_bgcolor': 'rgba(0,0,0,0)',
-            'paper_bgcolor': 'rgba(0,0,0,0)',
-            'colorway': CHART_COLORS,
-            'xaxis': {'gridcolor': '#e8e8e8', 'gridwidth': 1},
-            'yaxis': {'gridcolor': '#e8e8e8', 'gridwidth': 1}
+def configure_plotly_theme(dark_mode=False):
+    """Configura tema consistente para gráficas según el modo claro/oscuro"""
+    if dark_mode:
+        return {
+            'layout': {
+                'font': {
+                    'family': '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                    'size': 12,
+                    'color': '#ffffff'
+                },
+                'plot_bgcolor': '#2d2d30',
+                'paper_bgcolor': '#2d2d30',
+                'colorway': CHART_COLORS,
+                'xaxis': {
+                    'gridcolor': '#3e3e42', 
+                    'gridwidth': 1,
+                    'color': '#ffffff',
+                    'tickcolor': '#3e3e42'
+                },
+                'yaxis': {
+                    'gridcolor': '#3e3e42', 
+                    'gridwidth': 1,
+                    'color': '#ffffff',
+                    'tickcolor': '#3e3e42'
+                }
+            }
         }
-    }
+    else:
+        return {
+            'layout': {
+                'font': {
+                    'family': '"Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                    'size': 12,
+                    'color': '#2c3e50'
+                },
+                'plot_bgcolor': 'rgba(0,0,0,0)',
+                'paper_bgcolor': 'rgba(0,0,0,0)',
+                'colorway': CHART_COLORS,
+                'xaxis': {'gridcolor': '#e8e8e8', 'gridwidth': 1},
+                'yaxis': {'gridcolor': '#e8e8e8', 'gridwidth': 1}
+            }
+        }
 
-# Aplicar configuración global de Plotly
+# Aplicar configuración global de Plotly basada en el modo
 import plotly.io as pio
-pio.templates.default = "plotly_white"
 
-# CSS personalizado mejorado para accesibilidad WCAG
+# JavaScript mejorado para sidebar y modo oscuro
 st.markdown("""
-<style>
-    /* Tema principal con buen contraste */
-    .main {
-        background: #ffffff;
-        color: #212529;
-    }
-    
-    .stApp {
-        background: #ffffff;
-        color: #212529;
-    }
-    
-    /* Asegurar contraste en texto principal */
-    .main .block-container {
-        color: #212529;
-    }
-    
-    /* KPI Cards con mejor contraste */
-    .kpi-card {
-        background: linear-gradient(135deg, #2E86AB 0%, #277DA1 100%);
-        color: #ffffff !important;
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 2px solid #1a5f7a;
-        text-align: center;
-        margin: 0.5rem;
-        box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3);
-        transition: transform 0.3s ease;
-    }
-    
-    .kpi-card h2, .kpi-card h3, .kpi-card p {
-        color: #ffffff !important;
-        margin: 0.25rem 0;
-    }
-    
-    .kpi-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(46, 134, 171, 0.4);
-    }
-    
-    /* Contenedores de gráficos con fondo claro */
-    .chart-container {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 2px solid #dee2e6;
-        margin: 1rem 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Upload box mejorada */
-    .upload-box {
-        border: 3px dashed #2E86AB;
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        background: #f8f9fa;
-        color: #212529;
-        margin: 1rem 0;
-        transition: all 0.3s ease;
-    }
-    
-    .upload-box:hover {
-        border-color: #1a5f7a;
-        background: #e9ecef;
-    }
-    
-    /* Botones con mejor contraste */
-    .stButton > button {
-        background: linear-gradient(135deg, #2E86AB 0%, #277DA1 100%);
-        color: #ffffff !important;
-        border: 2px solid #1a5f7a;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-    
-    .stButton > button:hover {
-        background: linear-gradient(135deg, #1a5f7a 0%, #2E86AB 100%);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3);
-    }
-    
-    /* Inputs con mejor contraste */
-    .stSelectbox > div > div {
-        background-color: #ffffff;
-        border: 2px solid #ced4da;
-        border-radius: 8px;
-        color: #212529;
-    }
-    
-    .stTextInput > div > div > input {
-        background-color: #ffffff;
-        border: 2px solid #ced4da;
-        border-radius: 8px;
-        color: #212529 !important;
-    }
-    
-    .stFileUploader > div {
-        background-color: #f8f9fa;
-        border: 2px solid #ced4da;
-        border-radius: 8px;
-        color: #212529;
-    }
-    
-    /* Métricas de Streamlit */
-    .metric-container {
-        background: #ffffff;
-        border: 2px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    .metric-container label {
-        color: #6c757d !important;
-        font-weight: 600;
-    }
-    
-    .metric-container [data-testid="metric-container"] > div {
-        color: #212529 !important;
-    }
-    
-    /* Sidebar mejorada - CSS actualizado para compatibilidad cross-platform */
-    .stSidebar {
-        background-color: #343a40 !important;
-    }
-    
-    .stSidebar > div {
-        background-color: #343a40 !important;
-    }
-    
-    /* Asegurar visibilidad del sidebar en Mac y Windows */
-    section[data-testid="stSidebar"] {
-        background-color: #343a40 !important;
-        min-width: 244px !important;
-        max-width: 400px !important;
-    }
-    
-    section[data-testid="stSidebar"] > div {
-        background-color: #343a40 !important;
-        padding-top: 1rem !important;
-    }
-    
-    /* Mejorar contraste del contenido del sidebar */
-    section[data-testid="stSidebar"] .stMarkdown {
-        color: #ffffff !important;
-    }
-    
-    section[data-testid="stSidebar"] h1, 
-    section[data-testid="stSidebar"] h2, 
-    section[data-testid="stSidebar"] h3 {
-        color: #ffffff !important;
-    }
-    
-    /* CSS específico para option_menu en sidebar */
-    section[data-testid="stSidebar"] .nav-link {
-        color: #ffffff !important;
-        background-color: transparent !important;
-        border-radius: 6px !important;
-        margin: 2px 0 !important;
-        padding: 0.75rem 1rem !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    section[data-testid="stSidebar"] .nav-link:hover {
-        background-color: #2E86AB !important;
-        color: #ffffff !important;
-    }
-    
-    section[data-testid="stSidebar"] .nav-link-selected {
-        background-color: #2E86AB !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        box-shadow: 0 2px 4px rgba(46, 134, 171, 0.3) !important;
-    }
-    
-    /* Forzar visibilidad del sidebar en Safari/Mac */
-    @media screen and (-webkit-min-device-pixel-ratio: 1) {
-        section[data-testid="stSidebar"] {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            z-index: 999 !important;
-        }
-    }
-    
-    /* Asegurar que el botón del sidebar sea visible */
-    button[data-testid="stSidebarNav"] {
-        background-color: #2E86AB !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 4px !important;
-    }
-    
-    /* Mejorar visibilidad en diferentes resoluciones y sistemas */
-    @media (max-width: 768px) {
-        section[data-testid="stSidebar"] {
-            min-width: 280px !important;
-        }
-    }
-    
-    /* CSS específico para navegadores webkit (Safari/Mac) */
-    @supports (-webkit-appearance: none) {
-        section[data-testid="stSidebar"] {
-            background-color: #343a40 !important;
-            border-right: 2px solid #495057 !important;
-        }
-        
-        section[data-testid="stSidebar"] > div:first-child {
-            background-color: #343a40 !important;
-        }
-    }
-</style>
-
 <script>
-// JavaScript para forzar la visibilidad del sidebar en Mac
+// JavaScript para manejar el sidebar y modo oscuro
 document.addEventListener('DOMContentLoaded', function() {
     function ensureSidebarVisibility() {
         const sidebar = document.querySelector('section[data-testid="stSidebar"]');
@@ -296,11 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.style.opacity = '1';
             sidebar.style.zIndex = '999';
             
-            // Para navegadores webkit (Safari/Mac)
-            if (window.navigator.userAgent.includes('Safari') && !window.navigator.userAgent.includes('Chrome')) {
-                sidebar.style.backgroundColor = '#343a40';
-                sidebar.style.borderRight = '2px solid #495057';
-            }
+            // Mejorar visibilidad del sidebar
+            sidebar.style.minWidth = '280px';
+            sidebar.style.maxWidth = '350px';
         }
         
         // Verificar si el menú de opciones es visible
@@ -308,82 +115,33 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks.forEach(link => {
             link.style.color = 'white';
             link.style.visibility = 'visible';
+            link.style.display = 'block';
+        });
+        
+        // Asegurar que los elementos del sidebar sean visibles
+        const sidebarElements = sidebar?.querySelectorAll('*');
+        sidebarElements?.forEach(el => {
+            if (el.style.display === 'none') {
+                el.style.display = 'block';
+            }
         });
     }
     
-    // Ejecutar inmediatamente
+    // Ejecutar múltiples veces para asegurar que funcione
     ensureSidebarVisibility();
-    
-    // Ejecutar después de un pequeño delay para asegurar que el DOM esté listo
     setTimeout(ensureSidebarVisibility, 100);
     setTimeout(ensureSidebarVisibility, 500);
     setTimeout(ensureSidebarVisibility, 1000);
+    setTimeout(ensureSidebarVisibility, 2000);
     
     // Observador para cambios en el DOM
     const observer = new MutationObserver(ensureSidebarVisibility);
     observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Reobservar cuando cambia el contenido
+    setInterval(ensureSidebarVisibility, 3000);
 });
 </script>
-
-""", unsafe_allow_html=True)
-
-# CSS adicional para títulos y headers
-st.markdown("""
-<style>
-    /* Títulos y headers */
-    h1, h2, h3, h4, h5, h6 {
-        color: #212529 !important;
-    }
-    
-    /* Texto general */
-    p, span, div {
-        color: #212529;
-    }
-    
-    /* Expandir elementos */
-    .streamlit-expanderHeader {
-        background-color: #f8f9fa;
-        color: #212529 !important;
-        border: 1px solid #dee2e6;
-    }
-    
-    .streamlit-expanderContent {
-        background-color: #ffffff;
-        color: #212529;
-        border: 1px solid #dee2e6;
-    }
-    
-    /* Dataframes */
-    .dataframe {
-        color: #212529 !important;
-        background-color: #ffffff;
-    }
-    
-    /* Info boxes */
-    .stInfo {
-        background-color: #d1ecf1;
-        color: #0c5460 !important;
-        border: 1px solid #bee5eb;
-    }
-    
-    .stSuccess {
-        background-color: #d4edda;
-        color: #155724 !important;
-        border: 1px solid #c3e6cb;
-    }
-    
-    .stWarning {
-        background-color: #fff3cd;
-        color: #856404 !important;
-        border: 1px solid #ffeaa7;
-    }
-    
-    .stError {
-        background-color: #f8d7da;
-        color: #721c24 !important;
-        border: 1px solid #f5c6cb;
-    }
-</style>
 """, unsafe_allow_html=True)
 
 # Inicializar datos de sesión
@@ -393,6 +151,293 @@ if 'current_center' not in st.session_state:
     st.session_state.current_center = None
 if 'aggregated_data' not in st.session_state:
     st.session_state.aggregated_data = {}
+if 'dark_mode' not in st.session_state:
+    st.session_state.dark_mode = False
+
+# Función para generar CSS según el modo
+def get_theme_css(dark_mode=False):
+    """Genera CSS dinámico basado en el modo claro/oscuro"""
+    if dark_mode:
+        # Modo oscuro
+        bg_primary = "#1e1e1e"
+        bg_secondary = "#2d2d30"
+        bg_sidebar = "#252526"
+        text_primary = "#ffffff"
+        text_secondary = "#cccccc"
+        border_color = "#3e3e42"
+        card_bg = "#2d2d30"
+        button_bg = "#0078d4"
+        button_hover = "#106ebe"
+        input_bg = "#3c3c3c"
+        success_bg = "#0f5132"
+        warning_bg = "#664d03"
+        error_bg = "#58151c"
+        info_bg = "#055160"
+    else:
+        # Modo claro
+        bg_primary = "#ffffff"
+        bg_secondary = "#f8f9fa"
+        bg_sidebar = "#343a40"
+        text_primary = "#212529"
+        text_secondary = "#6c757d"
+        border_color = "#dee2e6"
+        card_bg = "#ffffff"
+        button_bg = "#2E86AB"
+        button_hover = "#1a5f7a"
+        input_bg = "#ffffff"
+        success_bg = "#d4edda"
+        warning_bg = "#fff3cd"
+        error_bg = "#f8d7da"
+        info_bg = "#d1ecf1"
+    
+    return f"""
+    <style>
+        /* Variables CSS para temas */
+        :root {{
+            --bg-primary: {bg_primary};
+            --bg-secondary: {bg_secondary};
+            --bg-sidebar: {bg_sidebar};
+            --text-primary: {text_primary};
+            --text-secondary: {text_secondary};
+            --border-color: {border_color};
+            --card-bg: {card_bg};
+            --button-bg: {button_bg};
+            --button-hover: {button_hover};
+            --input-bg: {input_bg};
+            --success-bg: {success_bg};
+            --warning-bg: {warning_bg};
+            --error-bg: {error_bg};
+            --info-bg: {info_bg};
+        }}
+        
+        /* Tema principal adaptable */
+        .main {{
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+        }}
+        
+        .stApp {{
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+        }}
+        
+        /* Contenedor principal */
+        .main .block-container {{
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+        }}
+        
+        /* KPI Cards mejoradas */
+        .kpi-card {{
+            background: linear-gradient(135deg, var(--button-bg) 0%, var(--button-hover) 100%);
+            color: #ffffff !important;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid var(--button-hover);
+            text-align: center;
+            margin: 0.5rem;
+            box-shadow: 0 4px 12px rgba(46, 134, 171, 0.3);
+            transition: all 0.3s ease;
+        }}
+        
+        .kpi-card h2, .kpi-card h3, .kpi-card p {{
+            color: #ffffff !important;
+            margin: 0.25rem 0;
+        }}
+        
+        .kpi-card:hover {{
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(46, 134, 171, 0.4);
+        }}
+        
+        /* Contenedores de gráficos */
+        .chart-container {{
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid var(--border-color);
+            margin: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, {"0.2" if dark_mode else "0.1"});
+        }}
+        
+        /* Sidebar mejorada */
+        section[data-testid="stSidebar"] {{
+            background: var(--bg-sidebar) !important;
+            border-right: 3px solid var(--button-bg) !important;
+            min-width: 280px !important;
+            max-width: 350px !important;
+        }}
+        
+        section[data-testid="stSidebar"] > div {{
+            background: var(--bg-sidebar) !important;
+            padding: 1rem !important;
+        }}
+        
+        /* Contenido del sidebar */
+        section[data-testid="stSidebar"] .stMarkdown {{
+            color: #ffffff !important;
+        }}
+        
+        section[data-testid="stSidebar"] h1, 
+        section[data-testid="stSidebar"] h2, 
+        section[data-testid="stSidebar"] h3 {{
+            color: #ffffff !important;
+            text-align: center;
+        }}
+        
+        /* Botones principales */
+        .stButton > button {{
+            background: linear-gradient(135deg, var(--button-bg) 0%, var(--button-hover) 100%);
+            color: #ffffff !important;
+            border: 2px solid var(--button-hover);
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }}
+        
+        .stButton > button:hover {{
+            background: linear-gradient(135deg, var(--button-hover) 0%, var(--button-bg) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 134, 171, 0.4);
+        }}
+        
+        /* Inputs mejorados */
+        .stSelectbox > div > div {{
+            background-color: var(--input-bg) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            color: var(--text-primary) !important;
+        }}
+        
+        .stTextInput > div > div > input {{
+            background-color: var(--input-bg) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            color: var(--text-primary) !important;
+        }}
+        
+        /* Títulos y texto */
+        h1, h2, h3, h4, h5, h6 {{
+            color: var(--text-primary) !important;
+        }}
+        
+        p, span, div {{
+            color: var(--text-primary) !important;
+        }}
+        
+        /* Métricas de Streamlit */
+        .metric-container {{
+            background: var(--card-bg) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: 12px !important;
+            padding: 1rem !important;
+        }}
+        
+        .metric-container label {{
+            color: var(--text-secondary) !important;
+            font-weight: 600 !important;
+        }}
+        
+        .metric-container [data-testid="metric-container"] > div {{
+            color: var(--text-primary) !important;
+        }}
+        
+        /* Cajas de información */
+        .stInfo {{
+            background-color: var(--info-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stSuccess {{
+            background-color: var(--success-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stWarning {{
+            background-color: var(--warning-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stError {{
+            background-color: var(--error-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+        }}
+        
+        /* Upload box */
+        .upload-box {{
+            border: 3px dashed var(--button-bg) !important;
+            border-radius: 12px !important;
+            padding: 2rem !important;
+            text-align: center !important;
+            background: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            margin: 1rem 0 !important;
+            transition: all 0.3s ease !important;
+        }}
+        
+        .upload-box:hover {{
+            border-color: var(--button-hover) !important;
+            background: var(--card-bg) !important;
+        }}
+        
+        /* Dataframes */
+        .dataframe {{
+            background-color: var(--card-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+        }}
+        
+        /* Expandir elementos */
+        .streamlit-expanderHeader {{
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+        }}
+        
+        .streamlit-expanderContent {{
+            background-color: var(--card-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 0 0 8px 8px !important;
+        }}
+        
+        /* CSS específico para navegadores webkit (Safari/Mac) */
+        @supports (-webkit-appearance: none) {{
+            section[data-testid="stSidebar"] {{
+                background: var(--bg-sidebar) !important;
+                border-right: 3px solid var(--button-bg) !important;
+            }}
+            
+            section[data-testid="stSidebar"] > div:first-child {{
+                background: var(--bg-sidebar) !important;
+            }}
+        }}
+        
+        /* Animaciones suaves */
+        * {{
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }}
+    </style>
+    """
+
+# Aplicar CSS dinámico basado en el modo
+st.markdown(get_theme_css(st.session_state.dark_mode), unsafe_allow_html=True)
+
+# Configurar Plotly según el modo
+pio.templates.default = "plotly_dark" if st.session_state.dark_mode else "plotly_white"
 
 # Función para mapear centros comerciales a zonas geográficas
 def get_geographic_zone(center_name):
@@ -674,14 +719,16 @@ def create_kpi_chart(data, sector_avg, metric_name, title, unit):
         )
     
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color="#212529")),
+        title=dict(text=title, font=dict(size=16, color="#ffffff" if st.session_state.dark_mode else "#212529")),
         xaxis_title="Fecha",
         yaxis_title=f"{title} ({unit})",
-        template="plotly_white",
+        template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=350,
         margin=dict(l=0, r=0, t=60, b=0),
         hovermode='x unified',
-        showlegend=True
+        showlegend=True,
+        plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+        paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
     )
     
     return fig
@@ -735,13 +782,15 @@ def create_comparison_chart(center_data, sector_avg):
     
     fig.update_layout(
         title=dict(text="Comparación vs. Promedio del Sector", 
-                  font=dict(size=16, color="#212529")),
-        template="plotly_white",
+                  font=dict(size=16, color="#ffffff" if st.session_state.dark_mode else "#212529")),
+        template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=450,
         barmode='group',
         xaxis_tickangle=-45,
         hovermode='x unified',
-        showlegend=True
+        showlegend=True,
+        plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+        paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
     )
     
     return fig
@@ -763,8 +812,8 @@ def create_category_performance_chart():
     
     fig.update_layout(
         title=dict(text="Distribución por Categorías", 
-                  font=dict(size=16, color="#212529")),
-        template="plotly_white",
+                  font=dict(size=16, color="#ffffff" if st.session_state.dark_mode else "#212529")),
+        template="plotly_dark" if st.session_state.dark_mode else "plotly_white",
         height=400,
         showlegend=True,
         legend=dict(
@@ -773,7 +822,9 @@ def create_category_performance_chart():
             y=0.5,
             xanchor="left",
             x=1.01
-        )
+        ),
+        plot_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)',
+        paper_bgcolor='#2d2d30' if st.session_state.dark_mode else 'rgba(0,0,0,0)'
     )
     
     return fig
@@ -964,59 +1015,133 @@ def create_market_analysis_charts():
 
 # Navegación principal
 with st.sidebar:
-    st.markdown("### 🏢 Harmon BI Dashboard")
+    # Header del sidebar con logo y título
+    st.markdown("""
+    <div style="text-align: center; padding: 1rem 0; margin-bottom: 1rem;">
+        <h2 style="color: white; margin: 0; font-size: 1.5rem;">🏢 Harmon BI</h2>
+        <p style="color: #cccccc; margin: 0.5rem 0 0 0; font-size: 0.9rem;">Business Intelligence Dashboard</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Toggle para modo oscuro
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        dark_mode_toggle = st.checkbox("🌙", value=st.session_state.dark_mode, key="dark_mode_toggle")
+    with col2:
+        st.markdown(f"<p style='color: white; margin: 0; padding-top: 0.2rem;'>{'Modo Oscuro' if dark_mode_toggle else 'Modo Claro'}</p>", unsafe_allow_html=True)
+    
+    # Actualizar el estado si cambió
+    if dark_mode_toggle != st.session_state.dark_mode:
+        st.session_state.dark_mode = dark_mode_toggle
+        st.rerun()
+    
     st.markdown("---")
     
+    # Menú de navegación mejorado
     selected = option_menu(
-        menu_title="Navegación",
+        menu_title="📍 Navegación",
         options=["Cargar Datos", "Dashboard", "Análisis vs Mercado", "Datos del Mercado", "Configuración"],
-        icons=["upload", "speedometer2", "graph-up", "database", "gear"],
-        menu_icon="building",
+        icons=["cloud-upload", "speedometer2", "graph-up", "database", "gear"],
+        menu_icon="compass",
         default_index=1,
         orientation="vertical",
         styles={
             "container": {
-                "padding": "0!important", 
-                "background-color": "#262730",
-                "border-radius": "8px",
-                "margin": "0.5rem 0"
+                "padding": "0.5rem 0",
+                "background-color": "#1a1a1a" if st.session_state.dark_mode else "#262730",
+                "border-radius": "12px",
+                "margin": "0.5rem 0",
+                "border": f"2px solid {'#3e3e42' if st.session_state.dark_mode else '#495057'}"
             },
             "icon": {
-                "color": "white", 
+                "color": "#ffffff", 
                 "font-size": "18px",
                 "margin-right": "0.75rem"
             },
             "nav-link": {
                 "font-size": "15px",
                 "text-align": "left",
-                "margin": "3px 0",
+                "margin": "4px 8px",
                 "padding": "0.75rem 1rem",
-                "border-radius": "6px",
-                "color": "white",
+                "border-radius": "8px",
+                "color": "#ffffff",
                 "background-color": "transparent",
-                "--hover-color": "#2E86AB",
+                "--hover-color": "#0078d4" if st.session_state.dark_mode else "#2E86AB",
                 "transition": "all 0.3s ease",
-                "white-space": "nowrap"
+                "white-space": "nowrap",
+                "border": "1px solid transparent"
             },
             "nav-link-selected": {
-                "background-color": "#2E86AB",
-                "color": "white",
+                "background-color": "#0078d4" if st.session_state.dark_mode else "#2E86AB",
+                "color": "#ffffff",
                 "font-weight": "600",
-                "box-shadow": "0 2px 4px rgba(46, 134, 171, 0.3)"
+                "box-shadow": f"0 4px 12px rgba({'7, 120, 212' if st.session_state.dark_mode else '46, 134, 171'}, 0.4)",
+                "border": f"1px solid {'#106ebe' if st.session_state.dark_mode else '#1a5f7a'}"
             },
         }
     )
     
-    # Información adicional en el sidebar
     st.markdown("---")
-    st.markdown("**📊 Centro Actual:**")
-    if st.session_state.current_center:
-        st.success(f"✅ {st.session_state.current_center}")
-    else:
-        st.info("No hay centro cargado")
     
-    st.markdown("**📈 Estado:**")
-    st.info(f"📁 Centros: {len(st.session_state.centers_data)}")
+    # Panel de información del centro actual
+    st.markdown("### 📊 Centro Actual")
+    if st.session_state.current_center:
+        st.markdown(f"""
+        <div style="background: {'#2d2d30' if st.session_state.dark_mode else '#e3f2fd'}; 
+                    padding: 1rem; border-radius: 8px; border-left: 4px solid {'#0078d4' if st.session_state.dark_mode else '#2E86AB'};">
+            <p style="color: {'#ffffff' if st.session_state.dark_mode else '#1565c0'}; margin: 0; font-weight: 600;">
+                ✅ {st.session_state.current_center}
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown(f"""
+        <div style="background: {'#2d2d30' if st.session_state.dark_mode else '#f3e5f5'}; 
+                    padding: 1rem; border-radius: 8px; border-left: 4px solid {'#666' if st.session_state.dark_mode else '#9c27b0'};">
+            <p style="color: {'#cccccc' if st.session_state.dark_mode else '#7b1fa2'}; margin: 0;">
+                📝 No hay centro cargado
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Panel de estadísticas
+    st.markdown("### 📈 Estadísticas")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric(
+            label="Centros", 
+            value=len(st.session_state.centers_data),
+            delta=None
+        )
+    with col2:
+        sector_avg = get_sector_averages()
+        st.metric(
+            label="Mercado", 
+            value=f"{sector_avg.get('ventas_totales', 0)/1000:.0f}k€",
+            delta=None
+        )
+    
+    # Información adicional
+    st.markdown("---")
+    with st.expander("ℹ️ Acerca de", expanded=False):
+        st.markdown(f"""
+        **Harmon BI Dashboard v1.0**
+        
+        • 🎨 Modo {'Oscuro' if st.session_state.dark_mode else 'Claro'} Activo
+        • 🖥️ Optimizado para Mac/Windows
+        • 📊 Datos en tiempo real
+        • 🔒 Privacidad garantizada
+        
+        *Desarrollado para análisis de centros comerciales*
+        """)
+    
+    # Footer del sidebar
+    st.markdown("---")
+    st.markdown("""
+    <div style="text-align: center; padding: 0.5rem 0; opacity: 0.7;">
+        <small style="color: #cccccc;">💡 Tip: Usa Ctrl+R para refrescar</small>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Navegación alternativa horizontal (fallback para problemas de sidebar)
 if not selected:
