@@ -244,28 +244,41 @@ def get_theme_css(dark_mode=False):
         
         /* KPI Cards mejoradas - Gradiente azul */
         .kpi-card {{
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
-        color: #ffffff !important;
-        padding: 1.5rem;
-        border-radius: 16px;
-            border: 2px solid #1d4ed8;
-        text-align: center;
-        margin: 0.5rem;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #e5e7eb 0%, #cbd5e1 100%);
+            color: #1f2937 !important;
+            padding: 1rem 0.75rem;
+            border-radius: 18px;
+            border: none;
+            text-align: center;
+            margin: 0.25rem;
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.08);
+            transition: box-shadow 0.2s, transform 0.2s;
         }}
-        
-        .kpi-card h2, .kpi-card h3, .kpi-card p {{
-        color: #ffffff !important;
-        margin: 0.25rem 0;
+
+        .kpi-card h2 {{font-size: 2rem;
+            font-weight: 600;
+            margin: 0.2rem 0 0.1rem 0;
+            color: #2563eb !important;
+            letter-spacing: -1px;}}
+
+        .kpi-card h3 {{font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0.1rem 0 0.2rem 0;
+            color: #1e293b !important;
         }}
-        
+
+        .kpi-card p {{
+            font-size: 0.95rem;
+            color: #64748b !important;
+            margin: 0.1rem 0 0 0;
+        }}
+
         .kpi-card:hover {{
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
-            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px) scale(1.03);
+            background: linear-gradient(135deg, #e0e7ef 0%, #f8fafc 100%);
         }}
-        
+
         /* Contenedores de gráficos */
         .chart-container {{
             background: var(--card-bg);
