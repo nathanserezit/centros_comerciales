@@ -7,6 +7,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import json
 import os
+import io
 
 # 🎨 Paleta de colores simplificada - Azul y Blanco
 # Esquema de color centrado en azul #2563eb con gradientes
@@ -1449,25 +1450,48 @@ if selected == "Dashboard":
         st.header("📈 Dashboard - Mi Centro")
     with col2:
         period = st.selectbox("Período", ["Mensual", "Trimestral", "Anual"], key="dashboard_period")
+    
+    # button para cargar datos desde CSV predefinido
+    if 'data_loaded' not in st.session_state:
+        st.session_state.data_loaded = False
     with col3:
-        # Botón personalizado para cargar datos
-        if st.button("📁 Cargar Datos", type="primary", use_container_width=True, key="load_data_btn"):
-            st.session_state.show_file_upload = True
-            st.rerun()
-        
-        # File uploader que aparece cuando se presiona el botón
-        if st.session_state.get('show_file_upload', False):
-            uploaded_file = st.file_uploader(
-                "Selecciona tu archivo",
-                type=['xlsx', 'csv'],
-                help="Excel (.xlsx) o CSV (.csv) - Máximo 10MB",
-                key="file_uploader_main"
-            )
-            if uploaded_file is not None:
-                st.session_state.uploaded_file = uploaded_file
+        button_label = "📁 Cargar Datos" if not st.session_state.data_loaded else "✅ Datos Cargados"
+        if st.button(button_label, type="primary", use_container_width=True, key="load_data_btn"):
+            if not st.session_state.data_loaded:
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                csv_path = os.path.join(current_dir, 'data', 'datos_individuales_centros.csv')
+                try:
+                    with open(csv_path, "rb") as f:
+                        file_bytes = f.read()
+                    uploaded_file = io.BytesIO(file_bytes)
+                    uploaded_file.name = 'datos_individuales_centros.csv'
+                    st.session_state.uploaded_file = uploaded_file
+                    st.session_state.data_loaded = True
+                    st.success("✅ Datos cargados con éxito desde datos_individuales_centros.csv")
+                except Exception as e:
+                    st.error(f"❌ Error al cargar datos: {e}")
                 st.session_state.show_file_upload = False
-                st.success(f"✅ Datos cargados: {uploaded_file.name}")
-                st.rerun()
+                st.rerun()       
+    # Mostrar mensaje de éxito si los datos ya están cargados
+    if st.session_state.data_loaded:
+        st.success("✅ Datos cargados con éxito. Listo para procesar.")
+
+
+# File uploader que aparece cuando se presiona el botón
+#        if st.session_state.get('show_file_upload', False):
+#            uploaded_file = st.file_uploader(
+#                "Selecciona tu archivo",
+#                type=['xlsx', 'csv'],
+#                help="Excel (.xlsx) o CSV (.csv) - Máximo 10MB",
+#                key="file_uploader_main"
+#            )
+#            if uploaded_file is not None:
+#                st.session_state.uploaded_file = uploaded_file
+#                st.session_state.show_file_upload = False
+#                st.success(f"✅ Datos cargados: {uploaded_file.name}")
+#                st.rerun()
+
+    # button para procesar datos
     with col4:
         if st.button("⚙️ Procesar Datos", type="primary", use_container_width=True, key="process_data_btn"):
             # Verificar si hay archivo cargado
@@ -1491,8 +1515,8 @@ if selected == "Dashboard":
                         st.session_state.centers_data[center_name] = center_data
                         st.session_state.current_center = center_name
                         st.session_state.uploaded_file = None
-                        st.success(f"✅ {message}")
-                        st.success("🎉 ¡Datos procesados exitosamente! Visualizando métricas...")
+                        # st.success(f"✅ {message}")
+                        # st.success("🎉 ¡Datos procesados exitosamente! Visualizando métricas...")
                         st.rerun()
                     else:
                         st.error(f"❌ {message}")
